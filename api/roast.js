@@ -47,11 +47,24 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    let jsonStr = data.choices[0].message.content.trim();
-    // Clean up markdown markers if present
-    jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    const content = data.choices[0].message.content.trim();
     
-    return res.status(200).json(JSON.parse(jsonStr));
+    // Robust extraction: find the first { and last }
+    const firstBrace = content.indexOf('{');
+    const lastBrace = content.lastIndexOf('}');
+    
+    if (firstBrace === -1 || lastBrace === -1) {
+        throw new Error('AI failed to output valid JSON format.');
+    }
+    
+    const jsonStr = content.substring(firstBrace, lastBrace + 1);
+    
+    try {
+        return res.status(200).json(JSON.parse(jsonStr));
+    } catch (e) {
+        console.error('Invalid JSON from AI:', content);
+        throw new Error('AI output was malformed. Please try again.');
+    }
   } catch (error) {
     console.error('API Error:', error);
     return res.status(500).json({ error: error.message || 'Failed to generate roast' });
