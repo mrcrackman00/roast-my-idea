@@ -1525,28 +1525,50 @@
 
             <!-- Share Section -->
             <div class="share-section fade-slide-up" style="animation-delay: 0.7s;">
-                <h3 class="share-heading">Share Your Roast</h3>
+                <h3 class="share-heading">📸 Share Your Roast Card</h3>
                 
                 <!-- Share Card Preview -->
                 <div id="shareCardContainer" class="share-card-preview">
-                    <div class="preview-label">Social Share Card Preview</div>
+                    <div class="preview-label">Social Share Card Preview (1200x630)</div>
                     <canvas id="shareCanvas" width="1200" height="630"></canvas>
                 </div>
 
                 <div class="action-buttons" style="margin-top: 24px;">
                     <button id="downloadCardBtn" class="btn btn-primary" style="width: auto; padding: 12px 24px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        📸 Download Card
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download Card
                     </button>
                     <button id="shareXBtn" class="btn btn-share">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
-                        🐦 Share on X
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
+                        Share on X
                     </button>
-                    <button id="downloadPdfBtn" class="btn" style="background: transparent; border-color: rgba(255,255,255,0.2);">
-                        Download PDF
+                </div>
+            </div>
+
+            <!-- Score Badge Section -->
+            <div class="share-section fade-slide-up" id="badgeSection" style="animation-delay: 0.8s; margin-top: 40px;">
+                <h3 class="share-heading">🏅 Roast Score Badge</h3>
+                <p class="section-desc" style="margin-top: -16px; margin-bottom: 24px;">A compact summary for your profile or bio.</p>
+                
+                <div id="badgeContainer" class="share-card-preview" style="max-width: 500px;">
+                    <div class="preview-label">Score Badge Preview (800x400)</div>
+                    <canvas id="badgeCanvas" width="800" height="400"></canvas>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 24px;">
+                    <button id="downloadBadgeBtn" class="btn btn-primary" style="width: auto; padding: 12px 24px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download Badge
                     </button>
-                    <button id="resetBtn" class="btn">
-                        Roast Another Idea
+                    <button id="shareBadgeXBtn" class="btn btn-share">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
+                        Share Badge
+                    </button>
+                    <button id="downloadPdfBtn" class="btn outline" style="border-color: rgba(255,255,255,0.1);">
+                        Full PDF Report
+                    </button>
+                    <button id="resetBtn" class="btn outline" style="border-color: rgba(255,255,255,0.1);">
+                        Reset
                     </button>
                 </div>
             </div>
@@ -1724,6 +1746,13 @@
         const shareCanvas = document.getElementById('shareCanvas');
         const shareCardContainer = document.getElementById('shareCardContainer');
         const downloadCardBtn = document.getElementById('downloadCardBtn');
+        
+        // Badge Elements
+        const badgeCanvas = document.getElementById('badgeCanvas');
+        const badgeContainer = document.getElementById('badgeContainer');
+        const downloadBadgeBtn = document.getElementById('downloadBadgeBtn');
+        const shareBadgeXBtn = document.getElementById('shareBadgeXBtn');
+        
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
         const leaderboardEntries = document.getElementById('leaderboardEntries');
 
@@ -1849,10 +1878,11 @@
                 animateScore('competitionLevel', data.scores.competitionLevel);
             }, 300);
 
-            // Generate Share Card
+            // Generate Share Card & Badge
             currentScores = data.scores;
             currentIdea = ideaInput.value.trim();
             generateShareCard(data.roast, data.scores);
+            generateRoastBadge(currentIdea, data.scores);
             
             // Save to Leaderboard
             saveToHistory(currentIdea, data.roast, data.scores);
@@ -2071,6 +2101,112 @@
             shareCardContainer.style.display = 'block';
         }
 
+        function generateRoastBadge(idea, scores) {
+            const ctx = badgeCanvas.getContext('2d');
+            const w = 800;
+            const h = 400;
+
+            // Background
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, w, h);
+
+            // Subtle local grid pattern
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < w; i += 20) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke();
+            }
+            for (let j = 0; j < h; j += 20) {
+                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(w, j); ctx.stroke();
+            }
+
+            // Thin orange border
+            ctx.strokeStyle = '#FF4500';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(10, 10, w - 20, h - 20);
+
+            // Overall Score
+            const avg = (scores.originality + scores.marketSize + scores.executionDifficulty + scores.competitionLevel) / 4;
+            const avgScore = avg.toFixed(1);
+            
+            // Score Color & Verdict
+            let color = '#FF4444', verdict = '💀 Terrible';
+            if (avg >= 9) { color = '#00FF88'; verdict = '🚀 Solid'; }
+            else if (avg >= 7) { color = '#FFD700'; verdict = '👀 Promising'; }
+            else if (avg >= 4) { color = '#FF8C00'; verdict = '⚠️ Risky'; }
+
+            // Flame Icon Top
+            ctx.font = '24px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🔥', w / 2, 45);
+
+            // Huge Score
+            ctx.fillStyle = '#FF4500';
+            ctx.font = 'bold 100px Inter, sans-serif';
+            ctx.fillText(`${avgScore}/10`, w / 2, 160);
+
+            // "ROAST SCORE" text
+            ctx.fillStyle = '#666666';
+            ctx.font = 'bold 16px Inter, sans-serif';
+            ctx.fillText('ROAST SCORE', w / 2, 185);
+
+            // Verdict
+            ctx.fillStyle = color;
+            ctx.font = 'bold 36px Inter, sans-serif';
+            ctx.fillText(verdict.toUpperCase(), w / 2, 240);
+
+            // Mini Scores Row
+            const innerMetrics = [
+                { label: 'Originality', val: scores.originality },
+                { label: 'Market', val: scores.marketSize },
+                { label: 'Execution', val: scores.executionDifficulty },
+                { label: 'Competition', val: scores.competitionLevel }
+            ];
+
+            const cellW = 160;
+            let startX = (w - (cellW * 4)) / 2;
+            innerMetrics.forEach(m => {
+                ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                roundRect(ctx, startX + 5, 270, cellW - 10, 40, 20, true, false);
+                
+                ctx.fillStyle = '#888888';
+                ctx.font = '500 12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(m.label, startX + cellW / 2, 288);
+                
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 14px monospace';
+                ctx.fillText(m.val, startX + cellW / 2, 303);
+                
+                startX += cellW;
+            });
+
+            // Footer URL
+            ctx.fillStyle = '#444444';
+            ctx.font = '500 14px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('roastmyidea.vercel.app', w / 2, h - 35);
+
+            // Idea Name (Left Vertical)
+            ctx.save();
+            ctx.translate(35, h/2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#333333';
+            ctx.font = '500 14px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(idea.substring(0, 30).toUpperCase(), 0, 0);
+            ctx.restore();
+
+            // Watermark Bottom Right
+            ctx.fillStyle = 'rgba(255, 69, 0, 0.3)';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText('🔥 RoastMyIdea.ai', w - 25, h - 25);
+
+            // Show container
+            badgeContainer.style.display = 'block';
+        }
+
         function wrapText(context, text, x, y, maxWidth, lineHeight) {
             const words = text.split(' ');
             let line = '';
@@ -2240,6 +2376,29 @@
             link.href = shareCanvas.toDataURL('image/png', 1.0);
             link.click();
             showToast('Downloading your roast card! 📸', 'success');
+        });
+
+        // Download Badge
+        downloadBadgeBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'roast-my-idea-badge.png';
+            link.href = badgeCanvas.toDataURL('image/png', 1.0);
+            link.click();
+            showToast('Downloading your roast badge! 🏅', 'success');
+        });
+
+        // Share Badge on X
+        shareBadgeXBtn.addEventListener('click', () => {
+            if(!currentScores) return;
+            const avg = (currentScores.originality + currentScores.marketSize + currentScores.executionDifficulty + currentScores.competitionLevel) / 4;
+            const avgScore = avg.toFixed(1);
+            let verdict = 'Terrible 💀';
+            if (avg >= 9) verdict = 'Solid 🚀';
+            else if (avg >= 7) verdict = 'Promising 👀';
+            else if (avg >= 4) verdict = 'Risky ⚠️';
+
+            const text = encodeURIComponent(`My startup idea scored ${avgScore}/10 on the Roast Scale 🔥\nVerdict: ${verdict}\n\nGet yours roasted free 👇\nroastmyidea.vercel.app\n#startups #founder #buildinpublic`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
         });
 
         // Clear History
