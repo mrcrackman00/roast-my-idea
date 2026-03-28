@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoastMyIdea.ai - Brutal AI Startup Feedback</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #080808;
+            --card-bg: #111111;
+            --border-color: #1a1a1a;
+            --primary: #FF4500;
+            --secondary: #FF6B35;
+            --success: #00FF88;
+            --text-primary: #FFFFFF;
+            --text-secondary: #888888;
+            --gradient: linear-gradient(135deg, #FF4500, #FF6B35);
+            --font-main: 'Inter', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Utility */
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 8, 8, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .badge-ai {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(255, 69, 0, 0.1);
+            padding: 4px 10px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 80px 0 40px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 16px;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .stats-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .stat-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 100px;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding-bottom: 80px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card.glow-orange {
+            border-color: rgba(255, 69, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 69, 0, 0.05), inset 0 0 20px rgba(255, 69, 0, 0.02);
+        }
+
+        .card.glow-red {
+            border-color: rgba(255, 0, 0, 0.3);
+            background: linear-gradient(to bottom right, #111111, #1a0a0a);
+        }
+
+        .card.glow-green {
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+        }
+
+        .card-header {
+            margin-bottom: 16px;
+        }
+
+        .card-label {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-subtext {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Inputs */
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .input-icon-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .input-icon-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        input[type="password"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            background: #000000;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 69, 0, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            padding-bottom: 30px; /* Space for counter */
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 16px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            pointer-events: none;
+        }
+
+        .key-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        .key-status.success {
+            color: var(--success);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.125rem;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 25px rgba(255, 69, 0, 0.5);
+            transform: translateY(-2px) scale(1.01);
+            filter: brightness(1.1);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn-warning-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 12px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+        }
+
+        /* Loading */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .fire-spinner {
+            font-size: 4rem;
+            display: inline-block;
+            animation: spin-pulse 2s infinite ease-in-out;
+            margin-bottom: 24px;
+        }
+
+        @keyframes spin-pulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.2) rotate(10deg); opacity: 1; filter: drop-shadow(0 0 20px rgba(255,69,0,0.8)); }
+            100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+        }
+
+        .loading-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+
+        /* Results */
+        .results-section {
+            display: none;
+        }
+
+        .fade-slide-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeSlideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .roast-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #ececec;
+            white-space: pre-wrap;
+            margin-top: 20px;
+        }
+
+        /* Progress bars */
+        .metric {
+            margin-bottom: 20px;
+        }
+
+        .metric:last-child {
+            margin-bottom: 0;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-score {
+            font-family: monospace;
+            font-size: 1.125rem;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 8px;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+        }
+
+        /* Improvement List */
+        .improvement-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .improvement-item {
+            background: #000;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .improvement-icon {
+            color: var(--success);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Share Section */
+        .share-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .share-heading {
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-share {
+            background: #000;
+            border-color: #333;
+        }
+
+        .btn-share:hover {
+            border-color: #fff;
+            background: #111;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: #111;
+            border-left: 4px solid red;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            margin: 12px 0;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            .hero { padding: 40px 0 20px; }
+            .action-buttons { flex-direction: column; }
+            .btn { width: 100%; }
+            .stats-badges { flex-direction: column; align-items: center; }
+            .toast-container { top: 16px; right: 16px; left: 16px; }
+            .toast { min-width: auto; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">🔥 RoastMyIdea<span style="color:var(--text-secondary)">.ai</span></div>
+            <div class="badge-ai">Powered by Gemini AI</div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>We'll destroy your startup idea.</h1>
+            <h2>Then fix it.</h2>
+            <p>Stop wasting months on a bad idea. Get brutal honest AI feedback in seconds.</p>
+            <div class="stats-badges">
+                <div class="stat-badge">🔥 10,000+ ideas roasted</div>
+                <div class="stat-badge">💀 93% founders found it useful</div>
+                <div class="stat-badge">✨ Free forever</div>
+            </div>
+        </section>
+
+        <!-- Input View -->
+        <div id="inputView">
+            <!-- Idea Input Card -->
+            <div class="card glow-orange">
+                <label class="card-label">💡 Your Startup Idea</label>
+                <div class="input-group">
+                    <textarea id="ideaInput" rows="6" placeholder="Describe your startup idea in detail... we dare you. The more detail, the better the roast." maxlength="500"></textarea>
+                    <div class="char-counter"><span id="charCount">0</span> / 500</div>
+                </div>
+                <button id="roastBtn" class="btn btn-primary">🔥 Roast My Idea</button>
+                <div class="btn-warning-text">Warning: This will hurt. But it'll help. 💀</div>
+            </div>
+        </div>
+
+        <!-- Loading View -->
+        <div id="loadingView" class="loading-state hidden">
+            <div class="fire-spinner">🔥</div>
+            <div class="loading-title">Analyzing your idea...</div>
+            <div class="card-subtext">Preparing the roast... <span class="loading-dots"></span>💀</div>
+        </div>
+
+        <!-- Results View -->
+        <div id="resultsView" class="results-section">
+            
+            <!-- Card 1: The Roast -->
+            <div class="card glow-red fade-slide-up" style="animation-delay: 0.1s;">
+                <button class="copy-btn" id="copyRoastBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy
+                </button>
+                <div class="card-header">
+                    <h3 class="card-label" style="color: #ff4444; font-size: 1.5rem;">💀 The Roast</h3>
+                    <div class="card-subtext">Brutally honest feedback</div>
+                </div>
+                <div class="roast-content" id="roastContent"></div>
+            </div>
+
+            <!-- Card 2: Damage Report -->
+            <div class="card glow-orange fade-slide-up" style="animation-delay: 0.3s;">
+                <div class="card-header">
+                    <h3 class="card-label" style="font-size: 1.5rem;">📊 Damage Report</h3>
+                    <div class="card-subtext">Metrics that hurt</div>
+                </div>
+                <div class="metrics-container">
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span>Originality</span>
+                            <span class="metric-score"><span id="score-originality">0</span>/10</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-originality"></div>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span>Market Size</span>
+                            <span class="metric-score"><span id="score-marketSize">0</span>/10</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-marketSize"></div>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span>Execution Difficulty</span>
+                            <span class="metric-score"><span id="score-executionDifficulty">0</span>/10</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-executionDifficulty"></div>
+                        </div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-header">
+                            <span>Competition Level</span>
+                            <span class="metric-score"><span id="score-competitionLevel">0</span>/10</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="bar-competitionLevel"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: How to save it -->
+            <div class="card glow-green fade-slide-up" style="animation-delay: 0.5s;">
+                <div class="card-header">
+                    <h3 class="card-label" style="font-size: 1.5rem; color: var(--success);">🚀 How To Save It</h3>
+                    <div class="card-subtext">3 ways to make it work</div>
+                </div>
+                <ul class="improvement-list" id="improvementList">
+                </ul>
+            </div>
+
+            <!-- Share Section -->
+            <div class="share-section fade-slide-up" style="animation-delay: 0.7s;">
+                <h3 class="share-heading">Share Your Roast</h3>
+                <div class="action-buttons">
+                    <button id="shareXBtn" class="btn btn-share">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
+                        Share on X
+                    </button>
+                    <button id="resetBtn" class="btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                        Roast Another Idea
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div>Built by a 16 y/o founder from India 🇮🇳</div>
+        <div class="footer-links">
+            <a href="#">WhisperMe.co</a>
+            <span>•</span>
+            <a href="#">GitHub</a>
+        </div>
+        <div>Made with 🔥 and zero sleep</div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // DOM Elements
+        const ideaInput = document.getElementById('ideaInput');
+        const API_KEY = "AIzaSyB0OaE7-R9ZEVAdGKnoAIOsTER-lFSRd6s";
+        const charCount = document.getElementById('charCount');
+        const roastBtn = document.getElementById('roastBtn');
+        const inputView = document.getElementById('inputView');
+        const loadingView = document.getElementById('loadingView');
+        const resultsView = document.getElementById('resultsView');
+        const toastContainer = document.getElementById('toastContainer');
+        const copyRoastBtn = document.getElementById('copyRoastBtn');
+        const shareXBtn = document.getElementById('shareXBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        const roastContent = document.getElementById('roastContent');
+        const improvementList = document.getElementById('improvementList');
+
+        // State
+        let currentRoastText = '';
+
+        // UI Interactions
+        ideaInput.addEventListener('input', (e) => {
+            const len = e.target.value.length;
+            charCount.textContent = len;
+            if (len >= 500) {
+                charCount.style.color = '#ff4444';
+            } else {
+                charCount.style.color = 'var(--text-secondary)';
+            }
+        });
+
+        // Toast Notification System
+        function showToast(message, type = 'error') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (type === 'success') {
+                toast.style.borderLeftColor = 'var(--success)';
+                toast.innerHTML = `<span class="toast-icon">✅</span><span>${message}</span>`;
+            } else {
+                toast.innerHTML = `<span class="toast-icon">❌</span><span>${message}</span>`;
+            }
+            
+            toastContainer.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // Remove after 3s
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Animate progress bars and numbers
+        function animateScore(id, score) {
+            const numEl = document.getElementById(`score-${id}`);
+            const barEl = document.getElementById(`bar-${id}`);
+            
+            // Set Color based on score
+            let color = '#ff4444'; // red
+            if (score > 7) color = '#00FF88'; // green
+            else if (score >= 4) color = '#FF6B35'; // orange
+            
+            barEl.style.backgroundColor = color;
+            
+            // Animate width
+            setTimeout(() => {
+                barEl.style.width = `${score * 10}%`;
+            }, 100);
+
+            // Animate number count up
+            let start = 0;
+            const duration = 1500;
+            const startTime = performance.now();
+
+            function updateNum(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // easeOutQuart
+                const ease = 1 - Math.pow(1 - progress, 4);
+                
+                const currentScore = (ease * score).toFixed(1);
+                // remove decimal if it's whole number to match design better, or keep for precision
+                numEl.textContent = currentScore.endsWith('.0') ? currentScore.split('.')[0] : currentScore;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateNum);
+                } else {
+                    numEl.textContent = score;
+                }
+            }
+            requestAnimationFrame(updateNum);
+        }
+
+        // Display Results
+        function renderResults(data) {
+            currentRoastText = data.roast;
+            roastContent.textContent = data.roast;
+
+            // Trigger confetti
+            if (window.confetti) {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FF4500', '#FF6B35', '#00FF88', '#FFFFFF']
+                });
+            }
+
+            // Switch views
+            loadingView.classList.add('hidden');
+            resultsView.style.display = 'block';
+
+            // Render improvements
+            improvementList.innerHTML = '';
+            data.improvements.forEach(imp => {
+                const li = document.createElement('li');
+                li.className = 'improvement-item';
+                li.innerHTML = `
+                    <div class="improvement-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div>${imp}</div>
+                `;
+                improvementList.appendChild(li);
+            });
+
+            // Start score animations a bit delayed for effect
+            setTimeout(() => {
+                animateScore('originality', data.scores.originality);
+                animateScore('marketSize', data.scores.marketSize);
+                animateScore('executionDifficulty', data.scores.executionDifficulty);
+                animateScore('competitionLevel', data.scores.competitionLevel);
+            }, 300);
+        }
+
+        // Roast API Call
+        async function fetchRoast(idea) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+            
+            const prompt = `You are the most brutal, honest startup critic in Silicon Valley. You have seen 10,000 startup ideas fail. Roast this idea mercilessly — be very specific about WHY it will fail, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. You MUST respond ONLY in valid JSON format with NO markdown, NO backticks, just pure JSON: {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}\n\nIdea: ${idea}`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+                generationConfig: {
+                    temperature: 0.8,
+                    responseMimeType: "application/json"
+                }
+            };
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                let errorDetails = response.statusText || `Status ${response.status}`;
+                try {
+                    const errData = await response.json();
+                    if (errData.error && errData.error.message) {
+                        errorDetails = errData.error.message;
+                    }
+                } catch(e) {}
+                throw new Error('API Error: ' + errorDetails);
+            }
+
+            const data = await response.json();
+            
+            try {
+                // Gemini sometimes still wraps in markdown despite instructions if mimeType isn't fully respected, but generationConfig should handle it.
+                // Just in case, parse carefully.
+                let jsonStr = data.candidates[0].content.parts[0].text;
+                // remove any possible backticks if they sneak through
+                jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+                return JSON.parse(jsonStr);
+            } catch (e) {
+                console.error('Failed to parse response JSON', data);
+                throw new Error('Failed to parse AI response.');
+            }
+        }
+
+        roastBtn.addEventListener('click', async () => {
+            const idea = ideaInput.value.trim();
+
+            if (!idea) {
+                showToast('Please enter your startup idea first!');
+                ideaInput.focus();
+                return;
+            }
+
+            // Show loading state
+            inputView.classList.add('hidden');
+            loadingView.classList.remove('hidden');
+
+            try {
+                const result = await fetchRoast(idea);
+                renderResults(result);
+            } catch (error) {
+                console.error(error);
+                loadingView.classList.add('hidden');
+                inputView.classList.remove('hidden');
+                showToast(error.message || 'Something went wrong. Try again!');
+            }
+        });
+
+        // Copy functionality
+        copyRoastBtn.addEventListener('click', () => {
+            if (currentRoastText) {
+                navigator.clipboard.writeText(currentRoastText).then(() => {
+                    showToast('Roast copied to clipboard!', 'success');
+                    const originalHTML = copyRoastBtn.innerHTML;
+                    copyRoastBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied';
+                    setTimeout(() => {
+                        copyRoastBtn.innerHTML = originalHTML;
+                    }, 2000);
+                });
+            }
+        });
+
+        // Share functionality
+        shareXBtn.addEventListener('click', () => {
+            const text = encodeURIComponent("Just got my startup idea brutally roasted by AI 💀 Check it out: roastmyidea.vercel.app #startups #buildinpublic");
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        });
+
+        // Reset functionality
+        resetBtn.addEventListener('click', () => {
+            resultsView.style.display = 'none';
+            // Reset styles for animations
+            document.querySelectorAll('.bar-fill').forEach(el => el.style.width = '0%');
+            document.querySelectorAll('.metric-score span').forEach(el => el.textContent = '0');
+            ideaInput.value = '';
+            charCount.textContent = '0';
+            charCount.style.color = 'var(--text-secondary)';
+            inputView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+    </script>
+</body>
+</html>
