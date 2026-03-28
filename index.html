@@ -1735,6 +1735,249 @@
                 linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.74) 100%);
         }
 
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            left: 10%;
+            top: 4%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 122, 51, 0.22), rgba(255, 122, 51, 0.05) 45%, transparent 72%);
+            filter: blur(58px);
+            z-index: -1;
+            animation: heroOrbFloat 14s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes heroOrbFloat {
+            0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(24px, 16px, 0) scale(1.05); }
+        }
+
+        .hero-panel {
+            animation: heroBorderPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes heroBorderPulse {
+            0%, 100% { box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 122, 51, 0.06); }
+            50% { box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 122, 51, 0.24), 0 0 30px rgba(255, 122, 51, 0.15); }
+        }
+
+        .hero-ticker {
+            margin-top: 24px;
+            width: min(100%, 760px);
+            padding: 12px 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+        }
+
+        .hero-ticker-track {
+            display: flex;
+            gap: 40px;
+            width: max-content;
+            color: rgba(255, 255, 255, 0.42);
+            font-size: 0.92rem;
+            white-space: nowrap;
+            animation: tickerScroll 26s linear infinite;
+        }
+
+        @keyframes tickerScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .page-section {
+            padding: 120px 0;
+        }
+
+        .social-proof-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .proof-card {
+            padding: 22px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)), rgba(10,10,10,0.84);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 16px 34px rgba(0,0,0,0.3);
+        }
+
+        .proof-card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .proof-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #ff5f1f, #ff9d4d);
+            box-shadow: 0 10px 20px rgba(255, 95, 31, 0.24);
+            flex-shrink: 0;
+        }
+
+        .proof-handle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .proof-quote {
+            color: #ededee;
+            font-size: 0.98rem;
+            line-height: 1.65;
+        }
+
+        .stats-section-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .stat-panel {
+            padding: 30px 24px;
+            border-radius: 24px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)), rgba(10,10,10,0.84);
+        }
+
+        .stat-panel-value {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 4rem);
+            line-height: 1;
+            letter-spacing: -0.05em;
+            margin-bottom: 10px;
+        }
+
+        .stat-panel-label {
+            color: var(--text-secondary);
+            font-size: 0.96rem;
+        }
+
+        .steps-grid {
+            position: relative;
+        }
+
+        .steps-grid::before {
+            content: '';
+            position: absolute;
+            top: 76px;
+            left: 14%;
+            right: 14%;
+            height: 1px;
+            z-index: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 122, 51, 0.32), transparent);
+            animation: connectorPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes connectorPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .step-card:hover {
+            border-color: rgba(255, 122, 51, 0.4);
+            box-shadow: 0 18px 38px rgba(0,0,0,0.38), 0 0 24px rgba(255, 122, 51, 0.12);
+        }
+
+        .step-icon {
+            width: 52px;
+            height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-size: 1.35rem;
+            background: rgba(255, 122, 51, 0.08);
+            border: 1px solid rgba(255, 122, 51, 0.14);
+        }
+
+        .example-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .example-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+            color: #ff9364;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: var(--transition);
+        }
+
+        .example-card:hover .example-cta {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-footer {
+            margin-top: 120px;
+            padding: 56px 0 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 28px;
+            align-items: start;
+            margin-bottom: 34px;
+        }
+
+        .footer-right {
+            display: contents;
+        }
+
+        .footer-nav-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 18px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-meta {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: right;
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Mobile */
         @media (max-width: 920px) {
             main.container {
@@ -1759,6 +2002,16 @@
                 max-width: 680px;
                 width: 100%;
                 justify-self: start;
+            }
+            .social-proof-grid,
+            .stats-section-grid,
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-meta,
+            .footer-nav-inline {
+                text-align: left;
+                justify-content: flex-start;
             }
         }
 
@@ -1812,6 +2065,16 @@
                 font-size: 0.95rem;
                 padding: 16px;
             }
+            .social-proof-grid,
+            .stats-section-grid,
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .footer-meta,
+            .footer-nav-inline {
+                text-align: left;
+                justify-content: flex-start;
+            }
         }
         @media (max-width: 640px) {
             .hero { padding: 28px 0 12px; }
@@ -1825,6 +2088,9 @@
             .hero-actions {
                 width: 100%;
                 flex-direction: column;
+            }
+            .hero-ticker {
+                width: 100%;
             }
             .hero-secondary-link {
                 width: 100%;
@@ -1853,10 +2119,9 @@
                 border-radius: 16px;
             }
             .hero .stats-badges { flex-direction: column; align-items: stretch; }
+            .steps-grid::before { display: none; }
             .toast-container { top: 16px; right: 16px; left: 16px; }
             .toast { min-width: auto; width: 100%; }
-            .footer-content { flex-direction: column; gap: 40px; }
-            .footer-right { gap: 40px; }
             .footer-bottom { flex-direction: column; text-align: center; justify-content: center; }
         }
     </style>
@@ -1946,6 +2211,18 @@
                 <div class="proof-chip"><strong>3 modes</strong> soft, realistic, brutal</div>
                 <div class="proof-chip"><strong>1 goal</strong> build something stronger</div>
             </div>
+            <div class="hero-ticker">
+                <div class="hero-ticker-track">
+                    <span>WhisperMe got roasted</span>
+                    <span>Uber for Dogs got destroyed</span>
+                    <span>AI Girlfriend App failed</span>
+                    <span>Crypto Social Network crushed</span>
+                    <span>WhisperMe got roasted</span>
+                    <span>Uber for Dogs got destroyed</span>
+                    <span>AI Girlfriend App failed</span>
+                    <span>Crypto Social Network crushed</span>
+                </div>
+            </div>
                 </div>
                 <div class="hero-panel">
                     <div class="hero-panel-top">
@@ -1974,6 +2251,60 @@
                             <div class="hero-metric-value">9 / 10</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section scroll-reveal" id="social-proof">
+            <div class="section-header">
+                <h2 class="section-title">Trusted by founders who ship</h2>
+                <p class="section-desc">The roast hurts a little. Wasting six months hurts a lot more.</p>
+            </div>
+            <div class="social-proof-grid">
+                <div class="proof-card">
+                    <div class="proof-card-top">
+                        <div class="proof-avatar">PB</div>
+                        <div class="proof-handle">@prakash_builds</div>
+                    </div>
+                    <div class="proof-quote">"Finally someone told me the truth about my idea"</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-card-top">
+                        <div class="proof-avatar">SF</div>
+                        <div class="proof-handle">@sarah_founder</div>
+                    </div>
+                    <div class="proof-quote">"Got roasted, pivoted, now profitable"</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-card-top">
+                        <div class="proof-avatar">TI</div>
+                        <div class="proof-handle">@techbro_india</div>
+                    </div>
+                    <div class="proof-quote">"This saved me 6 months of wasted time"</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-card-top">
+                        <div class="proof-avatar">VR</div>
+                        <div class="proof-handle">@vc_reject</div>
+                    </div>
+                    <div class="proof-quote">"Brutally honest. Exactly what I needed."</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section scroll-reveal" id="stats">
+            <div class="stats-section-grid">
+                <div class="stat-panel">
+                    <div class="stat-panel-value">2,847</div>
+                    <div class="stat-panel-label">Ideas Roasted</div>
+                </div>
+                <div class="stat-panel">
+                    <div class="stat-panel-value">3</div>
+                    <div class="stat-panel-label">Roast Modes</div>
+                </div>
+                <div class="stat-panel">
+                    <div class="stat-panel-value">4</div>
+                    <div class="stat-panel-label">Key Signals</div>
                 </div>
             </div>
         </section>
@@ -2171,7 +2502,7 @@
         </div>
     
         <!-- How it Works Section -->
-        <section id="how-it-works" class="page-section">
+        <section id="how-it-works" class="page-section scroll-reveal">
             <div class="section-header">
                 <h2 class="section-title">How It Works</h2>
                 <p class="section-desc">Three simple steps to save yourself from building a useless product.</p>
@@ -2205,7 +2536,7 @@
         </section>
 
         <!-- Examples Section -->
-        <section id="examples" class="page-section">
+        <section id="examples" class="page-section scroll-reveal">
             <div class="section-header">
                 <h2 class="section-title">Hall of Shame</h2>
                 <p class="section-desc">Click any example to autofill and roast it yourself.</p>
@@ -2220,6 +2551,7 @@
                         </div>
                     </div>
                     <div class="example-preview">"Ah yes, the 400th 'Uber for X' pitch today. Have you considered the unit economics of a 10-minute SLA on dog walkers?"</div>
+                    <div class="example-cta">Try this example &rarr;</div>
                 </div>
 
                 <div class="example-card" onclick="fillExample('AI Girlfriend App: A conversational AI that acts as your romantic partner with microtransactions for premium voice notes.')">
@@ -2231,6 +2563,7 @@
                         </div>
                     </div>
                     <div class="example-preview">"Financially brilliant, morally bankrupt. Prepare to fight 10,000 identical wrappers built on Character.ai."</div>
+                    <div class="example-cta">Try this example &rarr;</div>
                 </div>
 
                 <div class="example-card" onclick="fillExample('Crypto Social Network: A decentralized Twitter where every like costs $0.001 in Solana to prevent spam.')">
@@ -2242,12 +2575,13 @@
                         </div>
                     </div>
                     <div class="example-preview">"Nobody wants to pay to use Twitter. Friction is the enemy of social networks, and you just added financial friction to liking a meme."</div>
+                    <div class="example-cta">Try this example &rarr;</div>
                 </div>
             </div>
         </section>
 
         <!-- Leaderboard Section -->
-        <section id="leaderboard" class="page-section">
+        <section id="leaderboard" class="page-section scroll-reveal">
             <div class="section-header">
                 <h2 class="section-title">🏆 Hall of Shame</h2>
                 <p class="section-desc">The most brutally roasted ideas this week.</p>
@@ -2293,7 +2627,7 @@
                     </svg>
                     RoastMyIdea<span style="color:var(--text-secondary)">.ai</span>
                 </div>
-                <div class="footer-desc">Stop wasting months. Get brutal, honest AI feedback on your startup idea in seconds.</div>
+                <div class="footer-desc">Brutal AI startup feedback for founders who would rather pivot early than waste months shipping the wrong thing.</div>
                 <div class="footer-credit">
                     Built by <a href="https://github.com/mrcrackman00" target="_blank">Avinash</a> 🇮🇳
                     <span class="founder-badge">16 y/o Founder</span>
@@ -3045,9 +3379,35 @@
 
         // Roast API Call
         async function fetchRoast(idea, harshness) {
-            const endpoint = `/api/roast`;
-            
-            const response = await fetch(endpoint, {
+            try {
+                const response = await fetch('/api/roast', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idea, harshness })
+                });
+
+                if (!response.ok) {
+                    const contentType = response.headers.get("content-type");
+                    let msg = `Status ${response.status}`;
+                    if (contentType && contentType.includes("application/json")) {
+                        const errData = await response.json();
+                        msg = errData.error || msg;
+                    } else {
+                        if (response.status === 504) msg = "AI took too long (Vercel Timeout).";
+                        else if (response.status === 500) msg = "Server Error. Check your Groq Key.";
+                    }
+                    throw new Error(msg);
+                }
+                return await response.json();
+            } catch (err) {
+                if (err.name === 'TypeError' || err.message === 'Failed to fetch') {
+                    throw new Error("Connection failed. Are you running with 'vercel dev'?");
+                }
+                throw err;
+            }
+        }
+
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -3285,6 +3645,62 @@
             heroStatBadges[0].textContent = 'Built for founders';
             heroStatBadges[1].textContent = 'Powered by Groq AI';
             heroStatBadges[2].textContent = 'Free forever';
+        }
+
+        const footerDesc = document.querySelector('.footer-desc');
+        if (footerDesc) {
+            footerDesc.textContent = 'Brutal AI startup feedback for founders who would rather pivot early than waste months shipping the wrong thing.';
+        }
+
+        const footerCredit = document.querySelector('.footer-credit');
+        if (footerCredit) {
+            footerCredit.innerHTML = 'Built by <a href="https://github.com/mrcrackman00" target="_blank">Avinash</a> · 16 y/o founder from India';
+        }
+
+        if (footerCredit) {
+            footerCredit.innerHTML = footerCredit.innerHTML.replace(/Â·|·/g, '&middot;');
+        }
+
+        const footerCols = document.querySelectorAll('.footer-right .footer-col');
+        if (footerCols.length >= 2) {
+            footerCols[0].innerHTML = `
+                <h4>Explore</h4>
+                <div class="footer-nav-inline">
+                    <a href="#how-it-works">How it Works</a>
+                    <a href="#examples">Examples</a>
+                    <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank">GitHub</a>
+                    <a href="https://twitter.com/avinashtwts" target="_blank">Twitter</a>
+                </div>
+            `;
+            footerCols[1].innerHTML = `
+                <h4>Builder</h4>
+                <div class="footer-meta">Built by Avinash · 16 y/o founder from India</div>
+            `;
+        }
+
+        if (footerCols.length >= 2) {
+            footerCols[1].innerHTML = footerCols[1].innerHTML.replace(/Â·|·/g, '&middot;');
+        }
+
+        const footerBottom = document.querySelector('.footer-bottom');
+        if (footerBottom) {
+            footerBottom.innerHTML = '<div>&copy; 2026 RoastMyIdea.ai</div><div>whisperme.co</div>';
+        }
+
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+        if ('IntersectionObserver' in window && revealElements.length) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.14, rootMargin: '0px 0px -40px 0px' });
+
+            revealElements.forEach((element) => revealObserver.observe(element));
+        } else {
+            revealElements.forEach((element) => element.classList.add('is-visible'));
         }
 
         updateIdeaInsights('');
