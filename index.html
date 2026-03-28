@@ -1983,26 +1983,27 @@
 
         /* 920px - Tablets & Smaller Desktops */
         /* 920px - Tablets & Smaller Desktops */
+        /* 920px - Tablets & Smaller Desktops */
         @media (max-width: 920px) {
             main.container {
                 padding-left: 20px;
                 padding-right: 20px;
-                padding-top: 110px; /* Safer clearing of fixed header */
+                padding-top: 80px; /* Reduced from 110px */
             }
             main::before {
                 left: -20px;
                 right: -20px;
-                height: 400px;
+                height: 320px;
             }
             .hero {
-                padding: 30px 0 20px;
+                padding: 10px 0 20px; /* Reduced top padding from 30px */
                 text-align: center;
                 display: block !important;
                 visibility: visible !important;
             }
             .hero-grid {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 32px; /* Tighter gap */
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -2017,11 +2018,12 @@
                 flex-direction: column !important;
                 opacity: 1 !important;
                 visibility: visible !important;
+                will-change: transform, opacity;
             }
             .hero h1 {
                 max-width: 100%;
-                margin: 0 auto 20px;
-                font-size: 2.6rem; /* Direct unit for better compatibility */
+                margin: 0 auto 12px;
+                font-size: 2.5rem;
                 line-height: 1.1;
                 color: var(--text-primary) !important;
                 display: block !important;
@@ -2029,16 +2031,17 @@
             }
             .hero h2 {
                 max-width: 90%;
-                margin: 0 auto 16px;
-                font-size: 1.2rem;
+                margin: 0 auto 12px;
+                font-size: 1.15rem;
                 color: #ff6f2a !important;
                 display: block !important;
                 opacity: 1 !important;
             }
             .hero p {
                 max-width: 90%;
-                margin: 0 auto 24px;
-                font-size: 1rem;
+                margin: 0 auto 20px;
+                font-size: 0.95rem;
+                line-height: 1.6;
                 color: var(--text-secondary);
                 display: block !important;
                 opacity: 1 !important;
@@ -2050,7 +2053,7 @@
                 opacity: 1 !important;
             }
             .hero-panel {
-                max-width: 520px;
+                max-width: 500px;
                 width: 100%;
                 margin-top: 0;
                 display: block !important;
@@ -3770,7 +3773,7 @@
                         revealObserver.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.14, rootMargin: '0px 0px -40px 0px' });
+            }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }); // Lower threshold for faster reveal on scroll
 
             revealElements.forEach((element) => revealObserver.observe(element));
         } else {
