@@ -1198,10 +1198,127 @@
             .improvement-item { background: #f9f9f9; border-color: #eee; color: black; }
         }
 
+        /* Share Card Preview */
+        .share-card-preview {
+            margin-top: 32px;
+            background: #000;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: none; /* Shown after generation */
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .share-card-preview canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .preview-label {
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Leaderboard */
+        .leaderboard-container {
+            background: rgba(17, 17, 17, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px 120px;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            align-items: center;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .leaderboard-row:hover {
+            background: rgba(255, 69, 0, 0.03);
+        }
+
+        .leaderboard-row.header {
+            background: rgba(255,255,255,0.02);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .rank {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .rank-1 { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        .rank-2 { color: #C0C0C0; text-shadow: 0 0 10px rgba(192, 192, 192, 0.3); }
+        .rank-3 { color: #CD7F32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.3); }
+
+        .leader-idea {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 20px;
+        }
+
+        .leader-score {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .leader-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .btn-clear-history {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: color 0.2s;
+        }
+
+        .btn-clear-history:hover {
+            color: #ff4444;
+        }
+
+        .empty-leaderboard {
+            padding: 60px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
         /* Mobile */
         @media (max-width: 768px) {
             .desktop-only { display: none !important; }
             .mobile-menu-btn { display: block; }
+            .leaderboard-row {
+                grid-template-columns: 50px 1fr 80px;
+            }
+            .leader-time { display: none; }
         }
         @media (max-width: 640px) {
             .hero { padding: 40px 0 20px; }
@@ -1240,6 +1357,7 @@
             <nav class="nav-center desktop-only">
                 <a href="#how-it-works" class="nav-link">How it Works</a>
                 <a href="#examples" class="nav-link">Examples</a>
+                <a href="#leaderboard" class="nav-link">🏆 Leaderboard</a>
                 <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank" class="nav-link">GitHub</a>
             </nav>
 
@@ -1262,6 +1380,7 @@
         <div class="mobile-dropdown" id="mobileDropdown">
             <a href="#how-it-works" class="nav-link">How it Works</a>
             <a href="#examples" class="nav-link">Examples</a>
+            <a href="#leaderboard" class="nav-link">🏆 Leaderboard</a>
             <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank" class="nav-link">GitHub</a>
             <hr class="mobile-divider">
             <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank" class="btn-pill outline" style="justify-content:center; margin-bottom: 12px;">
@@ -1410,17 +1529,26 @@
             <!-- Share Section -->
             <div class="share-section fade-slide-up" style="animation-delay: 0.7s;">
                 <h3 class="share-heading">Share Your Roast</h3>
-                <div class="action-buttons">
+                
+                <!-- Share Card Preview -->
+                <div id="shareCardContainer" class="share-card-preview">
+                    <div class="preview-label">Social Share Card Preview</div>
+                    <canvas id="shareCanvas" width="1200" height="630"></canvas>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 24px;">
+                    <button id="downloadCardBtn" class="btn btn-primary" style="width: auto; padding: 12px 24px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        📸 Download Card
+                    </button>
                     <button id="shareXBtn" class="btn btn-share">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
-                        Share on X
+                        🐦 Share on X
                     </button>
                     <button id="downloadPdfBtn" class="btn" style="background: transparent; border-color: rgba(255,255,255,0.2);">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                         Download PDF
                     </button>
                     <button id="resetBtn" class="btn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                         Roast Another Idea
                     </button>
                 </div>
@@ -1504,6 +1632,35 @@
             </div>
         </section>
 
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">🏆 Hall of Shame</h2>
+                <p class="section-desc">The most brutally roasted ideas this week.</p>
+            </div>
+            
+            <div class="leaderboard-container" id="leaderboardList">
+                <!-- Header -->
+                <div class="leaderboard-row header">
+                    <div class="rank">#</div>
+                    <div class="leader-idea">Final Idea</div>
+                    <div class="leader-score">Brutality</div>
+                    <div class="leader-time">Time</div>
+                </div>
+
+                <!-- Entries injected by JS -->
+                <div id="leaderboardEntries">
+                    <div class="empty-leaderboard">
+                        No ideas roasted yet. Be the first! 🔥
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button id="clearHistoryBtn" class="btn-clear-history">Clear Local History</button>
+            </div>
+        </section>
+
     </main>
 
     <footer class="main-footer">
@@ -1568,9 +1725,16 @@
 
         const roastContent = document.getElementById('roastContent');
         const improvementList = document.getElementById('improvementList');
+        const shareCanvas = document.getElementById('shareCanvas');
+        const shareCardContainer = document.getElementById('shareCardContainer');
+        const downloadCardBtn = document.getElementById('downloadCardBtn');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const leaderboardEntries = document.getElementById('leaderboardEntries');
 
         // State
         let currentRoastText = '';
+        let currentScores = null;
+        let currentIdea = '';
 
         // UI Interactions
         ideaInput.addEventListener('input', (e) => {
@@ -1688,7 +1852,242 @@
                 animateScore('executionDifficulty', data.scores.executionDifficulty);
                 animateScore('competitionLevel', data.scores.competitionLevel);
             }, 300);
+
+            // Generate Share Card
+            currentScores = data.scores;
+            currentIdea = ideaInput.value.trim();
+            generateShareCard(data.roast, data.scores);
+            
+            // Save to Leaderboard
+            saveToHistory(currentIdea, data.roast, data.scores);
         }
+
+        // --- Leaderboard Logic ---
+        function saveToHistory(idea, roast, scores) {
+            let history = JSON.parse(localStorage.getItem('roast_history') || '[]');
+            
+            // Calculate average score
+            const avg = (scores.originality + scores.marketSize + scores.executionDifficulty + scores.competitionLevel) / 4;
+            
+            const entry = {
+                id: Date.now(),
+                idea: idea.substring(0, 500),
+                roast: roast,
+                scores: scores,
+                avgScore: parseFloat(avg.toFixed(1)),
+                timestamp: Date.now()
+            };
+
+            history.push(entry);
+            // Sort by lowest average score (most brutal)
+            history.sort((a, b) => a.avgScore - b.avgScore);
+            // Keep top 50
+            if (history.length > 50) history = history.slice(0, 50);
+            
+            localStorage.setItem('roast_history', JSON.stringify(history));
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const history = JSON.parse(localStorage.getItem('roast_history') || '[]');
+            leaderboardEntries.innerHTML = '';
+
+            if (history.length === 0) {
+                leaderboardEntries.innerHTML = '<div class="empty-leaderboard">No ideas roasted yet. Be the first! 🔥</div>';
+                return;
+            }
+
+            // Show top 10
+            const top10 = history.slice(0, 10);
+            top10.forEach((item, index) => {
+                const rank = index + 1;
+                let rankClass = '';
+                let emoji = '';
+                if (rank === 1) { rankClass = 'rank-1'; emoji = '🥇'; }
+                else if (rank === 2) { rankClass = 'rank-2'; emoji = '🥈'; }
+                else if (rank === 3) { rankClass = 'rank-3'; emoji = '🥉'; }
+
+                const date = new Date(item.timestamp);
+                const timeAgo = formatTimeAgo(date);
+
+                const row = document.createElement('div');
+                row.className = 'leaderboard-row';
+                row.innerHTML = `
+                    <div class="rank ${rankClass}">${emoji || '#' + rank}</div>
+                    <div class="leader-idea">${item.idea}</div>
+                    <div class="leader-score">${item.avgScore}/10</div>
+                    <div class="leader-time">${timeAgo}</div>
+                `;
+                
+                // Click to view
+                row.style.cursor = 'pointer';
+                row.addEventListener('click', () => {
+                    ideaInput.value = item.idea;
+                    renderResults({roast: item.roast, scores: item.scores, improvements: []});
+                    window.scrollTo({ top: resultsView.offsetTop - 100, behavior: 'smooth' });
+                });
+
+                leaderboardEntries.appendChild(row);
+            });
+        }
+
+        function formatTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            let interval = Math.floor(seconds / 31536000);
+            if (interval > 1) return interval + " years ago";
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) return interval + " months ago";
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) return interval + " days ago";
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) return interval + " hours ago";
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) return interval + " mins ago";
+            return "just now";
+        }
+
+        // --- Share Card Logic ---
+        function generateShareCard(roast, scores) {
+            const ctx = shareCanvas.getContext('2d');
+            const w = 1200;
+            const h = 630;
+
+            // Background
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, w, h);
+
+            // Subtle bottom gradient
+            const grad = ctx.createLinearGradient(0, h-100, 0, h);
+            grad.addColorStop(0, 'rgba(255, 69, 0, 0)');
+            grad.addColorStop(1, 'rgba(255, 69, 0, 0.1)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, h-100, w, h);
+            
+            // Accent line at bottom
+            ctx.fillStyle = '#FF4500';
+            ctx.fillRect(0, h-4, w, 4);
+
+            // Logo
+            ctx.save();
+            ctx.translate(50, 50);
+            ctx.scale(1.5, 1.5);
+            
+            const p1 = new Path2D("M16 2C16 2 24 12 24 20C24 24.4183 20.4183 28 16 28C11.5817 28 8 24.4183 8 20C8 12 16 2 16 2Z");
+            const p2 = new Path2D("M16 7C16 7 21 15 21 20C21 22.7614 18.7614 25 16 25C13.2386 25 11 22.7614 11 20C11 15 16 7 16 7Z");
+            
+            const logoGrad = ctx.createLinearGradient(16, 2, 16, 28);
+            logoGrad.addColorStop(0, '#FF4500');
+            logoGrad.addColorStop(1, '#FF8C00');
+            
+            ctx.fillStyle = logoGrad;
+            ctx.fill(p1);
+            ctx.fillStyle = 'rgba(255,255,255,0.4)';
+            ctx.fill(p2);
+            
+            ctx.restore();
+
+            // Text: RoastMyIdea.ai
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 32px Inter, system-ui, sans-serif';
+            ctx.fillText('RoastMyIdea', 105, 87);
+            ctx.fillStyle = '#666666';
+            ctx.fillText('.ai', 305, 87);
+
+            // Top Right URL
+            ctx.fillStyle = '#444444';
+            ctx.font = '500 24px Inter, system-ui, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText('roastmyidea.vercel.app', w - 50, 80);
+            ctx.textAlign = 'left';
+
+            // Roast Text (Wrapped)
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'italic 36px Inter, system-ui, sans-serif';
+            const words = roast.split(' ').slice(0, 80); // Limit words
+            const text = words.join(' ') + (roast.split(' ').length > 80 ? '...' : '');
+            wrapText(ctx, `"${text}"`, 80, 220, w - 160, 50);
+
+            // Score Badges
+            const badgeY = h - 140;
+            const metrics = [
+                { label: 'Originality', val: scores.originality },
+                { label: 'Market', val: scores.marketSize },
+                { label: 'Execution', val: scores.executionDifficulty },
+                { label: 'Competition', val: scores.competitionLevel }
+            ];
+
+            let startX = 80;
+            metrics.forEach(m => {
+                let color = '#ff4444';
+                if (m.val > 7) color = '#00FF88';
+                else if (m.val >= 4) color = '#FF6B35';
+
+                // Pill
+                ctx.fillStyle = color + '22';
+                ctx.strokeStyle = color + '44';
+                ctx.lineWidth = 2;
+                roundRect(ctx, startX, badgeY, 220, 50, 25, true, true);
+                
+                // Label
+                ctx.fillStyle = color;
+                ctx.font = 'bold 18px Inter, system-ui, sans-serif';
+                ctx.fillText(m.label, startX + 20, badgeY + 32);
+                
+                // Score
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 22px monospace';
+                ctx.fillText(m.val + '/10', startX + 160, badgeY + 33);
+
+                startX += 240;
+            });
+
+            // Bottom Right CTA
+            ctx.fillStyle = '#FF4500';
+            ctx.font = 'bold 24px Inter, system-ui, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText('Get your idea roasted free →', w - 50, h - 60);
+            ctx.textAlign = 'left';
+
+            // Show container
+            shareCardContainer.style.display = 'block';
+        }
+
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            for (let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = context.measureText(testLine);
+                let testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+            if (fill) ctx.fill();
+            if (stroke) ctx.stroke();
+        }
+
+        // --- Init ---
+        renderLeaderboard();
 
         // Roast API Call
         async function fetchRoast(idea, harshness) {
@@ -1839,8 +2238,27 @@
 
         // Share functionality
         shareXBtn.addEventListener('click', () => {
-            const text = encodeURIComponent("Just got my startup idea brutally roasted by AI 💀 Check it out: roastmyidea.vercel.app #startups #buildinpublic");
+            if(!currentScores) return;
+            const text = encodeURIComponent(`Just got my startup idea brutally roasted by AI 💀\n\nScores: Originality ${currentScores.originality}/10 | Market ${currentScores.marketSize}/10\n\nGet yours roasted free 👇\nroastmyidea.vercel.app\n#startups #buildinpublic #founder`);
             window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        });
+
+        // Download Card
+        downloadCardBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'roast-my-idea-card.png';
+            link.href = shareCanvas.toDataURL('image/png', 1.0);
+            link.click();
+            showToast('Downloading your roast card! 📸', 'success');
+        });
+
+        // Clear History
+        clearHistoryBtn.addEventListener('click', () => {
+            if(confirm('Are you sure you want to clear your local roast history?')) {
+                localStorage.removeItem('roast_history');
+                renderLeaderboard();
+                showToast('History cleared!', 'success');
+            }
         });
 
         // PDF Download functionality
