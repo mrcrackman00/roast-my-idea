@@ -1295,73 +1295,6 @@
             color: #ff4444;
         }
 
-        /* Settings Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 1100;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-card {
-            background: #111;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 480px;
-            padding: 32px;
-            position: relative;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes modalScale {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-header {
-            margin-bottom: 24px;
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .modal-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        .settings-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
         .settings-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-primary);
@@ -1426,9 +1359,6 @@
             </nav>
 
             <div class="nav-right desktop-only">
-                <button class="settings-btn" id="openSettingsBtn" title="API Settings">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                </button>
                 <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank" class="btn-pill outline">
                     <span>⭐</span> Star on GitHub
                 </a>
@@ -1772,25 +1702,6 @@
         </div>
     </footer>
 
-    <!-- Settings Modal -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 class="modal-title">🔐 API Settings</h3>
-                <p class="modal-desc">Your Groq API Key is stored safely in your browser and never synced to GitHub.</p>
-            </div>
-            <div class="input-group">
-                <label class="card-label" style="font-size: 0.9rem; color: var(--text-secondary);">Groq API Key</label>
-                <input type="password" id="apiKeyInput" placeholder="gsk_..." style="margin-top: 8px;">
-                <p style="font-size: 0.75rem; color: #666; margin-top: 8px;">Get yours at <a href="https://console.groq.com/keys" target="_blank" style="color: var(--primary);">Groq Console</a></p>
-            </div>
-            <div class="submit-row" style="margin-top: 32px;">
-                <button id="saveSettingsBtn" class="btn btn-primary">Save Changes</button>
-                <button id="closeSettingsBtn" class="btn" style="background: transparent; border: none;">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
@@ -1807,19 +1718,6 @@
         const shareXBtn = document.getElementById('shareXBtn');
         const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const resetBtn = document.getElementById('resetBtn');
-
-        // Settings Elements
-        const settingsModal = document.getElementById('settingsModal');
-        const openSettingsBtn = document.getElementById('openSettingsBtn');
-        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        const apiKeyInput = document.getElementById('apiKeyInput');
-
-        const DEFAULT_API_KEY = ""; // Intentionally empty to encourage using the Gear icon for security
-        
-        function getActiveApiKey() {
-            return localStorage.getItem('groq_api_key') || DEFAULT_API_KEY;
-        }
 
         const roastContent = document.getElementById('roastContent');
         const improvementList = document.getElementById('improvementList');
@@ -2189,33 +2087,14 @@
 
         // Roast API Call
         async function fetchRoast(idea, harshness) {
-            const endpoint = `https://api.groq.com/openai/v1/chat/completions`;
+            const endpoint = `/api/roast`;
             
-            let tone = "the most brutal, honest startup critic in Silicon Valley. Roast the user's idea mercilessly and destroy their ego — be very specific about WHY it will fail.";
-            if (harshness === 'soft') {
-                tone = "a gentle, supportive startup coach. Point out flaws but focus heavily on encouragement and soft corrections.";
-            } else if (harshness === 'real') {
-                tone = "a sharp, realistic Y Combinator partner. Be direct, pragmatic, and brutally objective about market realities, no fluff.";
-            }
-
-            const sysPrompt = `You are ${tone} You have seen 10,000 startup ideas. Analyze the idea, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. You MUST respond ONLY in valid JSON format with NO markdown, NO backticks, just pure JSON: {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
-
-            const payload = {
-                model: "llama-3.3-70b-versatile",
-                messages: [
-                    { role: "system", content: sysPrompt },
-                    { role: "user", content: `Idea: ${idea}` }
-                ],
-                temperature: 0.8
-            };
-
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getActiveApiKey()}`
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ idea, harshness })
             });
 
             if (!response.ok) {
@@ -2223,27 +2102,13 @@
                 try {
                     const errData = await response.json();
                     if (errData.error) {
-                        if (errData.error.code === 'invalid_api_key' || response.status === 401) {
-                            errorDetails = "Invalid API Key. Click the ⚙️ icon to set yours!";
-                        } else if (errData.error.message) {
-                            errorDetails = errData.error.message;
-                        }
+                        errorDetails = errData.error;
                     }
                 } catch(e) {}
                 throw new Error(errorDetails);
             }
 
-            const data = await response.json();
-            
-            try {
-                // Parse carefully, Llama sometimes includes markdown blocks
-                let jsonStr = data.choices[0].message.content.trim();
-                jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-                return JSON.parse(jsonStr);
-            } catch (e) {
-                console.error('Failed to parse response JSON', data);
-                throw new Error('Failed to parse AI response.');
-            }
+            return await response.json();
         }
 
         const logMessages = [
@@ -2292,13 +2157,6 @@
         }
 
         function triggerRoast() {
-            const key = getActiveApiKey();
-            if (!key) {
-                showToast('Please set your Groq API Key first (Click the ⚙️ icon)!');
-                settingsModal.classList.add('active');
-                return;
-            }
-
             const idea = ideaInput.value.trim();
             if (!idea) {
                 showToast('Please enter your startup idea first!');
@@ -2396,35 +2254,6 @@
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
-            }
-        });
-
-        // Settings Modal Handlers
-        openSettingsBtn.addEventListener('click', () => {
-            apiKeyInput.value = localStorage.getItem('groq_api_key') || '';
-            settingsModal.classList.add('active');
-        });
-
-        closeSettingsBtn.addEventListener('click', () => {
-            settingsModal.classList.remove('active');
-        });
-
-        saveSettingsBtn.addEventListener('click', () => {
-            const newKey = apiKeyInput.value.trim();
-            if (newKey) {
-                localStorage.setItem('groq_api_key', newKey);
-                showToast('API Key saved successfully! 🔐', 'success');
-            } else {
-                localStorage.removeItem('groq_api_key');
-                showToast('Reset to default API key.', 'success');
-            }
-            settingsModal.classList.remove('active');
-        });
-
-        // Close modal on escape
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && settingsModal.classList.contains('active')) {
-                settingsModal.classList.remove('active');
             }
         });
 
