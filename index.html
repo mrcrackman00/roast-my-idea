@@ -125,7 +125,20 @@
             letter-spacing: -0.02em;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo:hover {
+            opacity: 0.85;
+        }
+
+        .logo svg {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .logo:hover svg {
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .badge-author {
@@ -1080,7 +1093,15 @@
             margin-bottom: 16px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+        }
+
+        .footer-logo svg {
+            transition: transform 0.3s ease;
+        }
+
+        .footer-logo:hover svg {
+            transform: scale(1.05);
         }
 
         .footer-desc {
@@ -1200,7 +1221,19 @@
     <header id="main-header">
         <div class="nav-container">
             <div class="nav-left">
-                <a href="#" class="logo">🔥 RoastMyIdea<span style="color:var(--text-secondary)">.ai</span></a>
+                <a href="#" class="logo">
+                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                        <path d="M16 2C16 2 24 12 24 20C24 24.4183 20.4183 28 16 28C11.5817 28 8 24.4183 8 20C8 12 16 2 16 2Z" fill="url(#nav-logo-gradient)" />
+                        <path opacity="0.4" d="M16 7C16 7 21 15 21 20C21 22.7614 18.7614 25 16 25C13.2386 25 11 22.7614 11 20C11 15 16 7 16 7Z" fill="white" />
+                        <defs>
+                            <linearGradient id="nav-logo-gradient" x1="16" y1="2" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#FF4500" />
+                                <stop offset="1" stop-color="#FF8C00" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    RoastMyIdea<span style="color:var(--text-secondary)">.ai</span>
+                </a>
                 <span class="badge-author">by Avinash</span>
             </div>
             
@@ -1476,7 +1509,19 @@
     <footer class="main-footer">
         <div class="container footer-content">
             <div class="footer-left">
-                <div class="footer-logo">🔥 RoastMyIdea<span style="color:var(--text-secondary)">.ai</span></div>
+                <div class="footer-logo">
+                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+                        <path d="M16 2C16 2 24 12 24 20C24 24.4183 20.4183 28 16 28C11.5817 28 8 24.4183 8 20C8 12 16 2 16 2Z" fill="url(#footer-logo-gradient)" />
+                        <path opacity="0.4" d="M16 7C16 7 21 15 21 20C21 22.7614 18.7614 25 16 25C13.2386 25 11 22.7614 11 20C11 15 16 7 16 7Z" fill="white" />
+                        <defs>
+                            <linearGradient id="footer-logo-gradient" x1="16" y1="2" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#FF4500" />
+                                <stop offset="1" stop-color="#FF8C00" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    RoastMyIdea<span style="color:var(--text-secondary)">.ai</span>
+                </div>
                 <div class="footer-desc">Stop wasting months. Get brutal, honest AI feedback on your startup idea in seconds.</div>
                 <div class="footer-credit">
                     Built by <a href="https://github.com/mrcrackman00" target="_blank">Avinash</a> 🇮🇳
@@ -1499,7 +1544,7 @@
         </div>
         <div class="footer-bottom container">
             <div>&copy; 2026 RoastMyIdea. All rights reserved.</div>
-            <div class="made-with">Made with 🔥 and zero sleep</div>
+            <div class="made-with">Made with <span style="color: #FF4500;">🔥</span> and zero sleep</div>
         </div>
     </footer>
 
