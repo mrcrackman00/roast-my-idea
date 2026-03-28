@@ -1948,63 +1948,74 @@
             const w = 1200;
             const h = 630;
 
-            // Background
+            // Background - Pure Black with soft radial glow
             ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, w, h);
 
-            // Subtle bottom gradient
-            const grad = ctx.createLinearGradient(0, h-100, 0, h);
-            grad.addColorStop(0, 'rgba(255, 69, 0, 0)');
-            grad.addColorStop(1, 'rgba(255, 69, 0, 0.1)');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, h-100, w, h);
+            const radialGrad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w);
+            radialGrad.addColorStop(0, 'rgba(255, 69, 0, 0.05)');
+            radialGrad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = radialGrad;
+            ctx.fillRect(0, 0, w, h);
             
             // Accent line at bottom
             ctx.fillStyle = '#FF4500';
-            ctx.fillRect(0, h-4, w, 4);
+            ctx.fillRect(0, h-6, w, 6);
 
+            // Header Area
             // Logo
             ctx.save();
-            ctx.translate(50, 50);
-            ctx.scale(1.5, 1.5);
+            ctx.translate(60, 60);
+            ctx.scale(1.4, 1.4);
             
             const p1 = new Path2D("M16 2C16 2 24 12 24 20C24 24.4183 20.4183 28 16 28C11.5817 28 8 24.4183 8 20C8 12 16 2 16 2Z");
-            const p2 = new Path2D("M16 7C16 7 21 15 21 20C21 22.7614 18.7614 25 16 25C13.2386 25 11 22.7614 11 20C11 15 16 7 16 7Z");
-            
             const logoGrad = ctx.createLinearGradient(16, 2, 16, 28);
             logoGrad.addColorStop(0, '#FF4500');
             logoGrad.addColorStop(1, '#FF8C00');
-            
             ctx.fillStyle = logoGrad;
             ctx.fill(p1);
-            ctx.fillStyle = 'rgba(255,255,255,0.4)';
-            ctx.fill(p2);
-            
             ctx.restore();
 
             // Text: RoastMyIdea.ai
             ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'bold 32px Inter, system-ui, sans-serif';
-            ctx.fillText('RoastMyIdea', 105, 87);
+            ctx.font = 'bold 36px Inter, system-ui, sans-serif';
+            ctx.fillText('RoastMyIdea', 115, 95);
             ctx.fillStyle = '#666666';
-            ctx.fillText('.ai', 305, 87);
+            ctx.fillText('.ai', 340, 95);
 
             // Top Right URL
             ctx.fillStyle = '#444444';
             ctx.font = '500 24px Inter, system-ui, sans-serif';
             ctx.textAlign = 'right';
-            ctx.fillText('roastmyidea.vercel.app', w - 50, 80);
+            ctx.fillText('roastmyidea.vercel.app', w - 60, 90);
             ctx.textAlign = 'left';
 
-            // Roast Text (Wrapped)
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = 'italic 36px Inter, system-ui, sans-serif';
-            const words = roast.split(' ').slice(0, 80); // Limit words
-            const text = words.join(' ') + (roast.split(' ').length > 80 ? '...' : '');
-            wrapText(ctx, `"${text}"`, 80, 220, w - 160, 50);
+            // Roast Text Section
+            // Dynamic Font Sizing
+            const cleanRoast = roast.trim();
+            let fontSize = 42;
+            if (cleanRoast.length > 300) fontSize = 34;
+            if (cleanRoast.length > 500) fontSize = 28;
 
-            // Score Badges
-            const badgeY = h - 140;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = `italic ${fontSize}px Inter, system-ui, sans-serif`;
+            
+            const margin = 100;
+            const maxWidth = w - (margin * 2);
+            const startY = 200;
+            const lineHeight = fontSize * 1.4;
+
+            // Quote Symbol
+            ctx.fillStyle = 'rgba(255, 69, 0, 0.3)';
+            ctx.font = 'bold 120px Georgia, serif';
+            ctx.fillText('“', 60, 240);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = `italic ${fontSize}px Inter, system-ui, sans-serif`;
+            wrapText(ctx, `${cleanRoast}`, margin, startY + 20, maxWidth, lineHeight);
+
+            // Metrics Grid (At Bottom)
+            const badgeY = h - 160;
             const metrics = [
                 { label: 'Originality', val: scores.originality },
                 { label: 'Market', val: scores.marketSize },
@@ -2012,36 +2023,48 @@
                 { label: 'Competition', val: scores.competitionLevel }
             ];
 
-            let startX = 80;
-            metrics.forEach(m => {
-                let color = '#ff4444';
-                if (m.val > 7) color = '#00FF88';
-                else if (m.val >= 4) color = '#FF6B35';
+            const badgeW = 220;
+            const badgeH = 60;
+            const spacing = (w - (badgeW * 4) - 120) / 3;
+            let currentX = 60;
 
-                // Pill
-                ctx.fillStyle = color + '22';
-                ctx.strokeStyle = color + '44';
-                ctx.lineWidth = 2;
-                roundRect(ctx, startX, badgeY, 220, 50, 25, true, true);
+            metrics.forEach(m => {
+                let color = '#FF4444'; // Red
+                if (m.val > 7) color = '#00FF88'; // Green
+                else if (m.val >= 4) color = '#FFBB00'; // Yellow/Orange
+
+                // Badge Container
+                ctx.fillStyle = 'rgba(255,255,255,0.03)';
+                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+                ctx.lineWidth = 1;
+                roundRect(ctx, currentX, badgeY, badgeW, badgeH, 12, true, true);
                 
-                // Label
+                // Color Dot
                 ctx.fillStyle = color;
-                ctx.font = 'bold 18px Inter, system-ui, sans-serif';
-                ctx.fillText(m.label, startX + 20, badgeY + 32);
+                ctx.beginPath();
+                ctx.arc(currentX + 25, badgeY + badgeH/2, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = '#888888';
+                ctx.font = '500 18px Inter, system-ui, sans-serif';
+                ctx.fillText(m.label, currentX + 45, badgeY + badgeH/2 + 6);
                 
                 // Score
                 ctx.fillStyle = '#FFFFFF';
                 ctx.font = 'bold 22px monospace';
-                ctx.fillText(m.val + '/10', startX + 160, badgeY + 33);
+                ctx.textAlign = 'right';
+                ctx.fillText(m.val + '/10', currentX + badgeW - 20, badgeY + badgeH/2 + 7);
+                ctx.textAlign = 'left';
 
-                startX += 240;
+                currentX += badgeW + spacing;
             });
 
-            // Bottom Right CTA
-            ctx.fillStyle = '#FF4500';
+            // Bottom CTA
+            ctx.fillStyle = 'rgba(255, 69, 0, 0.8)';
             ctx.font = 'bold 24px Inter, system-ui, sans-serif';
             ctx.textAlign = 'right';
-            ctx.fillText('Get your idea roasted free →', w - 50, h - 60);
+            ctx.fillText('Roast your idea for free at roastmyidea.vercel.app →', w - 60, h - 50);
             ctx.textAlign = 'left';
 
             // Show container
