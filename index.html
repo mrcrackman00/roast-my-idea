@@ -1984,11 +1984,12 @@
         /* 920px - Tablets & Smaller Desktops */
         /* 920px - Tablets & Smaller Desktops */
         /* 920px - Tablets & Smaller Desktops */
+        /* 920px - Tablets & Smaller Desktops */
         @media (max-width: 920px) {
             main.container {
                 padding-left: 20px;
                 padding-right: 20px;
-                padding-top: 80px; /* Reduced from 110px */
+                padding-top: 72px; /* Exactly clear the 72px fixed header */
             }
             main::before {
                 left: -20px;
@@ -1996,14 +1997,18 @@
                 height: 320px;
             }
             .hero {
-                padding: 10px 0 20px; /* Reduced top padding from 30px */
+                padding: 0 0 20px; /* Removed top padding entirely */
                 text-align: center;
                 display: block !important;
                 visibility: visible !important;
             }
+            .hero-pill {
+                margin-top: 0 !important;
+                margin-bottom: 20px;
+            }
             .hero-grid {
                 grid-template-columns: 1fr;
-                gap: 32px; /* Tighter gap */
+                gap: 28px; /* Tighter gap */
                 display: flex;
                 flex-direction: column;
                 align-items: center;
