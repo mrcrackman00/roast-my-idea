@@ -2274,6 +2274,141 @@
             }
         }
 
+        /* Final Footer Overrides */
+        .main-footer {
+            margin-top: 120px !important;
+            padding: 56px 0 18px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(0,0,0,0.78) 100%) !important;
+        }
+
+        .main-footer .footer-content {
+            display: grid !important;
+            grid-template-columns: minmax(280px, 1.15fr) minmax(420px, 1fr) !important;
+            gap: 48px !important;
+            align-items: start !important;
+            margin-bottom: 34px !important;
+            text-align: left !important;
+        }
+
+        .main-footer .footer-left {
+            max-width: 420px !important;
+        }
+
+        .main-footer .footer-logo {
+            font-family: var(--font-display) !important;
+            font-size: 1.4rem !important;
+            font-weight: 700 !important;
+            margin-bottom: 18px !important;
+        }
+
+        .main-footer .footer-desc {
+            color: rgba(255,255,255,0.62) !important;
+            font-size: 1rem !important;
+            line-height: 1.75 !important;
+            margin-bottom: 0 !important;
+            max-width: 34ch !important;
+        }
+
+        .main-footer .footer-credit {
+            display: none !important;
+        }
+
+        .main-footer .footer-right {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 28px !important;
+            width: 100% !important;
+        }
+
+        .main-footer .footer-col h4 {
+            font-size: 0.82rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.08em !important;
+            text-transform: uppercase !important;
+            margin-bottom: 12px !important;
+            opacity: 0.9 !important;
+        }
+
+        .main-footer .footer-nav-inline {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 12px 18px !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+        }
+
+        .main-footer .footer-nav-inline a {
+            color: rgba(255,255,255,0.72) !important;
+            font-size: 0.95rem !important;
+            text-decoration: none !important;
+        }
+
+        .main-footer .footer-nav-inline a:hover {
+            color: #fff !important;
+        }
+
+        .main-footer .footer-meta {
+            color: rgba(255,255,255,0.7) !important;
+            font-size: 0.98rem !important;
+            line-height: 1.7 !important;
+            max-width: 30ch !important;
+            text-align: left !important;
+        }
+
+        .main-footer .footer-bottom {
+            padding-top: 20px !important;
+            border-top: 1px solid rgba(255,255,255,0.08) !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            color: var(--text-secondary) !important;
+            font-size: 0.9rem !important;
+            gap: 12px !important;
+        }
+
+        @media (max-width: 920px) {
+            .main-footer .footer-content {
+                grid-template-columns: 1fr !important;
+                gap: 30px !important;
+            }
+
+            .main-footer .footer-right {
+                grid-template-columns: 1fr !important;
+                gap: 22px !important;
+            }
+
+            .main-footer .footer-nav-inline,
+            .main-footer .footer-meta {
+                justify-content: flex-start !important;
+                text-align: left !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-footer .footer-content,
+            .main-footer .footer-left,
+            .main-footer .footer-right {
+                text-align: center !important;
+            }
+
+            .main-footer .footer-desc,
+            .main-footer .footer-meta {
+                margin-left: auto !important;
+                margin-right: auto !important;
+                text-align: center !important;
+            }
+
+            .main-footer .footer-nav-inline {
+                justify-content: center !important;
+            }
+
+            .main-footer .footer-bottom {
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+        }
+
         /* Premium Touch Feedback */
         @media (hover: none) {
             .btn:active, .btn-pill:active, .prompt-chip:active {
