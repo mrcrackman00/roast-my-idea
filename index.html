@@ -1895,6 +1895,206 @@
             font-size: 0.96rem;
         }
 
+        .signal-lab-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .signal-console {
+            position: relative;
+            border-radius: 28px;
+            padding: 26px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background:
+                linear-gradient(165deg, rgba(255, 122, 51, 0.08), transparent 42%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+                rgba(8, 8, 8, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            overflow: hidden;
+        }
+
+        .signal-console::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 84% 20%, rgba(255, 122, 51, 0.22), transparent 56%);
+            opacity: 0.85;
+        }
+
+        .signal-console-head {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .signal-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #f2f2f2;
+            font-size: 0.88rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .signal-live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #ff7a33;
+            box-shadow: 0 0 0 0 rgba(255, 122, 51, 0.52);
+            animation: signalPulse 2s ease-out infinite;
+        }
+
+        @keyframes signalPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 122, 51, 0.52); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 122, 51, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 122, 51, 0); }
+        }
+
+        .signal-latency {
+            color: rgba(255, 255, 255, 0.66);
+            font-size: 0.82rem;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding: 7px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+        }
+
+        .signal-stream {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            gap: 14px;
+        }
+
+        .signal-row {
+            display: grid;
+            gap: 8px;
+        }
+
+        .signal-row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .signal-track {
+            position: relative;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .signal-fill {
+            --signal-level: 50%;
+            --signal-delay: 0s;
+            width: var(--signal-level);
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(255, 122, 51, 0.66), rgba(255, 176, 79, 0.95));
+            box-shadow: 0 0 22px rgba(255, 122, 51, 0.22);
+            animation: signalBreathe 4s ease-in-out infinite;
+            animation-delay: var(--signal-delay);
+            transform-origin: left center;
+        }
+
+        @keyframes signalBreathe {
+            0%, 100% { filter: brightness(0.92); }
+            50% { filter: brightness(1.08); }
+        }
+
+        .signal-chip-row {
+            position: relative;
+            z-index: 1;
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .signal-chip {
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 0.8rem;
+            letter-spacing: 0.03em;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .signal-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .signal-feature-card {
+            position: relative;
+            border-radius: 22px;
+            padding: 20px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)), rgba(10, 10, 10, 0.88);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .signal-feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 122, 51, 0.34);
+            box-shadow: 0 20px 36px rgba(0, 0, 0, 0.34), 0 0 24px rgba(255, 122, 51, 0.12);
+        }
+
+        .signal-feature-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #ffd9c2;
+            border: 1px solid rgba(255, 122, 51, 0.24);
+            background: rgba(255, 122, 51, 0.1);
+        }
+
+        .signal-feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fafafa;
+            margin-bottom: 8px;
+        }
+
+        .signal-feature-text {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+
+        .signal-feature-value {
+            font-family: var(--font-display);
+            font-size: 1.55rem;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            color: #ffb07a;
+        }
+
         .steps-grid {
             position: relative;
         }
@@ -2383,6 +2583,11 @@
                 justify-content: flex-start !important;
                 text-align: left !important;
             }
+
+            .signal-lab-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
         }
 
         @media (max-width: 640px) {
@@ -2406,6 +2611,1330 @@
             .main-footer .footer-bottom {
                 flex-direction: column !important;
                 text-align: center !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .signal-console {
+                padding: 20px;
+                border-radius: 22px;
+            }
+
+            .signal-console-head {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .signal-feature-grid {
+                display: flex;
+                overflow-x: auto;
+                gap: 12px;
+                padding-bottom: 6px;
+                scroll-snap-type: x mandatory;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .signal-feature-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .signal-feature-card {
+                min-width: 250px;
+                flex: 0 0 250px;
+                scroll-snap-align: start;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .signal-feature-card {
+                min-width: calc(100vw - 72px);
+                flex-basis: calc(100vw - 72px);
+            }
+        }
+
+        /* World-Class Landing Overhaul */
+        :root {
+            --premium-ink: #0a0d14;
+            --premium-surface: rgba(15, 19, 30, 0.66);
+            --premium-border: rgba(153, 166, 204, 0.2);
+            --premium-accent-a: #7f92ff;
+            --premium-accent-b: #9e77ff;
+            --premium-muted: #9fa9be;
+        }
+
+        body {
+            background-color: #04060d;
+            background-image:
+                radial-gradient(circle at 16% 10%, rgba(138, 117, 255, 0.14), transparent 34%),
+                radial-gradient(circle at 82% 6%, rgba(110, 153, 255, 0.16), transparent 30%),
+                linear-gradient(rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px);
+            background-size: auto, auto, 36px 36px, 36px 36px;
+        }
+
+        .container {
+            max-width: 1280px;
+            padding-left: 32px;
+            padding-right: 32px;
+        }
+
+        main.container {
+            max-width: 1400px;
+            padding-left: 44px;
+            padding-right: 44px;
+            padding-top: 24px;
+        }
+
+        .nav-container {
+            max-width: 1360px;
+            padding: 0 28px;
+        }
+
+        header {
+            height: 68px;
+            background: rgba(5, 7, 12, 0.76);
+            border-bottom: 0;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        header.scrolled {
+            background: rgba(5, 7, 12, 0.92);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+        }
+
+        main::before {
+            left: -40px;
+            right: -40px;
+            height: 580px;
+            background:
+                radial-gradient(circle at 30% 12%, rgba(127, 146, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 76% 0%, rgba(158, 119, 255, 0.13), transparent 34%);
+        }
+
+        .hero {
+            padding: 96px 0 84px;
+            text-align: left;
+        }
+
+        .hero::after {
+            width: 560px;
+            height: 560px;
+            left: 18%;
+            top: 8%;
+            background: radial-gradient(circle, rgba(127, 146, 255, 0.24), rgba(158, 119, 255, 0.14) 42%, transparent 72%);
+            filter: blur(68px);
+        }
+
+        .hero-grid {
+            grid-template-columns: minmax(0, 1.05fr) minmax(520px, 0.95fr);
+            gap: 84px;
+            align-items: center;
+        }
+
+        .hero-copy {
+            max-width: 760px;
+            padding-top: 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.4rem, 5.4vw, 5.9rem);
+            line-height: 0.94;
+            letter-spacing: -0.062em;
+            margin-bottom: 24px;
+            max-width: 11.6ch;
+        }
+
+        .hero h2 {
+            font-size: clamp(1.18rem, 1.6vw, 1.48rem);
+            color: #d7dded;
+            max-width: 35ch;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 1.06rem;
+            color: #a9b2c8;
+            max-width: 58ch;
+            margin-bottom: 34px;
+        }
+
+        .hero-actions {
+            margin-bottom: 24px;
+        }
+
+        .hero-actions .btn {
+            min-height: 58px;
+            border-radius: 15px;
+            box-shadow: 0 16px 30px rgba(255, 122, 51, 0.2);
+        }
+
+        .hero-secondary-link {
+            min-height: 58px;
+            border-radius: 15px;
+        }
+
+        .hero-panel {
+            max-width: none;
+            min-height: 620px;
+            border-radius: 30px;
+            padding: 28px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+                linear-gradient(160deg, rgba(127, 146, 255, 0.13), transparent 46%),
+                rgba(9, 12, 20, 0.9);
+            border: 1px solid rgba(154, 170, 213, 0.24);
+        }
+
+        .hero-panel-copy {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(154, 170, 213, 0.2);
+            color: #f4f6fb;
+            font-size: 1.02rem;
+        }
+
+        .hero-metric {
+            background: rgba(255, 255, 255, 0.022);
+            border-color: rgba(154, 170, 213, 0.18);
+        }
+
+        .hero-ticker {
+            width: 100%;
+            border-color: rgba(154, 170, 213, 0.18);
+        }
+
+        .hero-ticker-track {
+            color: rgba(198, 208, 234, 0.62);
+        }
+
+        .page-section {
+            margin-top: 0;
+            padding: 118px 0;
+            border-top: 1px solid rgba(156, 172, 214, 0.12);
+        }
+
+        .section-header {
+            text-align: left;
+            margin-bottom: 42px;
+        }
+
+        .section-title {
+            font-size: clamp(2.2rem, 3.9vw, 4rem);
+            letter-spacing: -0.038em;
+        }
+
+        .section-desc {
+            margin: 0;
+            max-width: 62ch;
+            color: var(--premium-muted);
+            font-size: 1.02rem;
+            line-height: 1.8;
+        }
+
+        #social-proof .section-header,
+        #leaderboard .section-header {
+            text-align: center;
+        }
+
+        #social-proof .section-desc,
+        #leaderboard .section-desc {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .social-proof-grid {
+            gap: 20px;
+        }
+
+        .proof-card {
+            border-radius: 24px;
+            border-color: rgba(154, 170, 213, 0.2);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012)),
+                rgba(10, 14, 24, 0.9);
+        }
+
+        .proof-avatar {
+            background: linear-gradient(135deg, var(--premium-accent-a), var(--premium-accent-b));
+            box-shadow: 0 10px 26px rgba(127, 146, 255, 0.28);
+        }
+
+        #stats {
+            padding-top: 72px;
+            padding-bottom: 98px;
+            border-top: none;
+        }
+
+        .stats-section-grid {
+            max-width: 1150px;
+            gap: 16px;
+        }
+
+        .stat-panel {
+            border: 1px solid rgba(154, 170, 213, 0.18);
+            border-radius: 22px;
+            background: rgba(12, 16, 26, 0.66);
+            padding: 24px 20px;
+        }
+
+        #signal-lab {
+            padding-top: 94px;
+        }
+
+        .feature-split {
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+            gap: 72px;
+            align-items: center;
+        }
+
+        .feature-split.is-reverse .feature-copy {
+            order: 2;
+        }
+
+        .feature-split.is-reverse .feature-visual {
+            order: 1;
+        }
+
+        .feature-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(154, 170, 213, 0.22);
+            color: #d4dcf2;
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.2vw, 3.3rem);
+            line-height: 1.04;
+            letter-spacing: -0.045em;
+            margin-bottom: 16px;
+            max-width: 17ch;
+        }
+
+        .feature-desc {
+            color: var(--premium-muted);
+            font-size: 1.02rem;
+            line-height: 1.8;
+            max-width: 56ch;
+            margin-bottom: 24px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+            max-width: 58ch;
+        }
+
+        .feature-list li {
+            color: #d9deeb;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            display: grid;
+            grid-template-columns: 18px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .feature-list li::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            margin-top: 0.55em;
+            background: linear-gradient(135deg, var(--premium-accent-a), var(--premium-accent-b));
+            box-shadow: 0 0 0 4px rgba(127, 146, 255, 0.16);
+        }
+
+        .feature-visual {
+            position: relative;
+            border-radius: 30px;
+            border: 1px solid rgba(154, 170, 213, 0.24);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+                rgba(8, 12, 20, 0.9);
+            box-shadow: 0 26px 70px rgba(0, 0, 0, 0.4);
+            padding: 26px;
+            overflow: hidden;
+        }
+
+        .feature-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 80% 20%, rgba(127, 146, 255, 0.22), transparent 52%);
+        }
+
+        .mock-window {
+            position: relative;
+            z-index: 1;
+            border-radius: 22px;
+            border: 1px solid rgba(154, 170, 213, 0.2);
+            background: rgba(8, 11, 18, 0.8);
+            overflow: hidden;
+        }
+
+        .mock-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(154, 170, 213, 0.16);
+            background: rgba(255, 255, 255, 0.015);
+            color: #d9e0f2;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .mock-dot-row {
+            display: inline-flex;
+            gap: 6px;
+        }
+
+        .mock-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        .mock-body {
+            padding: 18px 16px;
+            display: grid;
+            gap: 14px;
+        }
+
+        .mock-chart-row {
+            display: grid;
+            grid-template-columns: minmax(80px, 1fr) minmax(0, 2fr) auto;
+            gap: 12px;
+            align-items: center;
+            color: #d9deeb;
+            font-size: 0.86rem;
+        }
+
+        .mock-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .mock-bar i {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--premium-accent-a), var(--premium-accent-b));
+        }
+
+        .mock-note {
+            border-radius: 14px;
+            border: 1px solid rgba(154, 170, 213, 0.18);
+            background: rgba(255, 255, 255, 0.018);
+            padding: 13px 14px;
+            color: #e2e6f2;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .mock-footer {
+            border-top: 1px solid rgba(154, 170, 213, 0.16);
+            padding: 14px 16px;
+            color: var(--premium-muted);
+            font-size: 0.84rem;
+        }
+
+        .timeline-list {
+            display: grid;
+            gap: 10px;
+            list-style: none;
+        }
+
+        .timeline-list li {
+            border-radius: 14px;
+            border: 1px solid rgba(154, 170, 213, 0.16);
+            background: rgba(255, 255, 255, 0.016);
+            padding: 12px 14px;
+            color: #dbe1f2;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        .demo-wide {
+            border-radius: 32px;
+            border: 1px solid rgba(154, 170, 213, 0.24);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+                rgba(8, 11, 18, 0.92);
+            padding: 30px;
+            box-shadow: 0 28px 74px rgba(0, 0, 0, 0.4);
+        }
+
+        .demo-wide-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+            gap: 18px;
+        }
+
+        .demo-pane {
+            border-radius: 22px;
+            border: 1px solid rgba(154, 170, 213, 0.18);
+            background: rgba(255, 255, 255, 0.018);
+            padding: 20px;
+        }
+
+        .demo-pane h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        .demo-pane p {
+            color: var(--premium-muted);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .demo-stat-grid {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .demo-stat {
+            border-radius: 14px;
+            border: 1px solid rgba(154, 170, 213, 0.16);
+            background: rgba(255, 255, 255, 0.018);
+            padding: 12px;
+        }
+
+        .demo-stat span {
+            color: var(--premium-muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .demo-stat strong {
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .final-cta-shell {
+            border-radius: 30px;
+            border: 1px solid rgba(154, 170, 213, 0.24);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+                linear-gradient(145deg, rgba(127, 146, 255, 0.14), rgba(158, 119, 255, 0.08) 42%, transparent 72%),
+                rgba(8, 12, 20, 0.92);
+            padding: clamp(30px, 6vw, 68px);
+            text-align: center;
+            box-shadow: 0 30px 74px rgba(0, 0, 0, 0.42);
+        }
+
+        .final-cta-eyebrow {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #d8def4;
+            margin-bottom: 14px;
+        }
+
+        .final-cta-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4.2vw, 4rem);
+            line-height: 1.02;
+            letter-spacing: -0.05em;
+            max-width: 16ch;
+            margin: 0 auto 14px;
+        }
+
+        .final-cta-text {
+            max-width: 58ch;
+            margin: 0 auto 30px;
+            color: var(--premium-muted);
+            font-size: 1.02rem;
+            line-height: 1.75;
+        }
+
+        .final-cta-shell .btn {
+            min-height: 58px;
+            border-radius: 15px;
+            padding: 0 30px;
+            width: auto;
+        }
+
+        #inputView, #loadingView, #resultsView {
+            max-width: 1040px;
+        }
+
+        @media (max-width: 1280px) {
+            .hero-grid {
+                grid-template-columns: minmax(0, 1fr) minmax(460px, 0.95fr);
+                gap: 58px;
+            }
+
+            .hero-panel {
+                min-height: 560px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .feature-split,
+            .feature-split.is-reverse {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .feature-split.is-reverse .feature-copy,
+            .feature-split.is-reverse .feature-visual {
+                order: initial;
+            }
+
+            .demo-wide-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 920px) {
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            main.container {
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 74px;
+            }
+
+            .hero {
+                padding: 40px 0 30px;
+                text-align: center;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .hero-copy {
+                align-items: center;
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                max-width: 13ch;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero h2,
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-actions,
+            .stats-badges,
+            .hero-proof {
+                justify-content: center;
+            }
+
+            .hero-panel {
+                min-height: 0;
+            }
+
+            .page-section {
+                padding: 90px 0;
+            }
+
+            .section-header {
+                text-align: center;
+                margin-bottom: 32px;
+            }
+
+            .section-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: clamp(2.4rem, 11.2vw, 3.4rem);
+            }
+
+            .hero h2 {
+                font-size: 1.05rem;
+                max-width: 30ch;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .page-section {
+                padding: 74px 0;
+            }
+
+            .feature-title {
+                max-width: none;
+            }
+
+            .feature-visual,
+            .demo-wide,
+            .final-cta-shell {
+                border-radius: 24px;
+                padding: 20px;
+            }
+
+            .mock-chart-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .final-cta-text {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Roast Console Premium Redesign */
+        #inputView {
+            margin-top: 12px;
+        }
+
+        #inputView .roast-console-card {
+            position: relative;
+            padding: clamp(14px, 1.4vw, 18px);
+            border-radius: 22px;
+            border: 1px solid rgba(154, 170, 213, 0.24);
+            border-top-color: transparent;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.008)),
+                rgba(6, 9, 16, 0.95);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        #inputView .roast-console-card::before {
+            content: '';
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            right: -120px;
+            top: -120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(127, 146, 255, 0.12), rgba(158, 119, 255, 0.03) 46%, transparent 74%);
+            filter: blur(22px);
+            pointer-events: none;
+        }
+
+        #inputView .roast-console-card::after {
+            content: none;
+        }
+
+        #inputView .roast-console-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        #inputView .roast-console-head {
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        #inputView .roast-console-title-wrap {
+            display: grid;
+            gap: 6px;
+        }
+
+        #inputView .roast-console-kicker {
+            display: none;
+            align-items: center;
+            width: fit-content;
+            font-size: 0.66rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(183, 196, 226, 0.86);
+            border: 1px solid rgba(154, 170, 213, 0.28);
+            border-radius: 999px;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.018);
+        }
+
+        #inputView .roast-console-title {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: clamp(0.98rem, 1.2vw, 1.18rem);
+            line-height: 1.2;
+            letter-spacing: -0.018em;
+            color: #f7f9ff;
+            max-width: 38ch;
+        }
+
+        #inputView .roast-console-title .title-accent {
+            background: linear-gradient(120deg, #ffffff 0%, #d8e2ff 36%, #9fb4ff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        #inputView .roast-console-note {
+            display: none;
+        }
+
+        #inputView .roast-console-card .harshness-selector {
+            padding: 5px;
+            border-radius: 999px;
+            border: 1px solid rgba(154, 170, 213, 0.24);
+            background: rgba(5, 8, 15, 0.74);
+            gap: 6px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        #inputView .roast-console-card .harshness-selector label {
+            padding: 8px 14px;
+            font-size: 0.78rem;
+            letter-spacing: 0.02em;
+            border: 1px solid transparent;
+            color: rgba(218, 227, 246, 0.72);
+        }
+
+        #inputView .roast-console-card .harshness-selector input[type="radio"]:checked + label {
+            border-color: rgba(154, 170, 213, 0.32);
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+        }
+
+        #inputView .roast-console-card .harshness-selector input[value="brutal"]:checked + label {
+            border-color: rgba(255, 122, 51, 0.42);
+            background: linear-gradient(135deg, rgba(255, 122, 51, 0.22), rgba(255, 160, 79, 0.15));
+            color: #ffd7c2;
+        }
+
+        #inputView .roast-console-card .input-group {
+            margin-bottom: 10px;
+            position: relative;
+            border-radius: 16px;
+            border: 1px solid rgba(154, 170, 213, 0.18);
+            background: rgba(4, 7, 14, 0.82);
+            padding: 8px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        #inputView .roast-console-card #ideaInput {
+            min-height: 132px;
+            border-radius: 12px;
+            padding: 14px 14px 42px;
+            border: 1px solid rgba(154, 170, 213, 0.16);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.016), rgba(255, 255, 255, 0.008)),
+                rgba(3, 5, 11, 0.95);
+            color: #f6f8ff;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        #inputView .roast-console-card #ideaInput::placeholder {
+            color: rgba(170, 180, 205, 0.56);
+        }
+
+        #inputView .roast-console-card #ideaInput:focus {
+            border-color: rgba(127, 146, 255, 0.62);
+            box-shadow: 0 0 0 3px rgba(127, 146, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        #inputView .roast-console-card .char-counter {
+            bottom: 14px;
+            right: 14px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(154, 170, 213, 0.18);
+            background: rgba(5, 8, 15, 0.92);
+            color: rgba(186, 198, 226, 0.74);
+            font-size: 0.72rem;
+        }
+
+        #inputView .roast-console-card .input-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        #inputView .roast-console-card .prompt-chips {
+            gap: 10px;
+        }
+
+        #inputView .roast-console-card .prompt-chip {
+            border: 1px solid rgba(154, 170, 213, 0.22);
+            background: rgba(255, 255, 255, 0.018);
+            color: rgba(219, 227, 245, 0.76);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 500;
+        }
+
+        #inputView .roast-console-card .prompt-chip:hover {
+            color: #ffffff;
+            border-color: rgba(127, 146, 255, 0.5);
+            background: rgba(127, 146, 255, 0.14);
+        }
+
+        #inputView .roast-console-card #surpriseMeBtn {
+            min-height: 38px;
+            border-radius: 10px;
+            padding: 0 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(154, 170, 213, 0.26);
+            color: #eef2ff;
+            box-shadow: none;
+            white-space: nowrap;
+            font-size: 0.86rem;
+        }
+
+        #inputView .roast-console-card #surpriseMeBtn:hover {
+            border-color: rgba(127, 146, 255, 0.56);
+            background: rgba(127, 146, 255, 0.14);
+            transform: translateY(-1px);
+        }
+
+        #inputView .roast-console-card .idea-insights {
+            display: none;
+        }
+
+        #inputView .roast-console-card .insight-card {
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(154, 170, 213, 0.2);
+            background: rgba(255, 255, 255, 0.014);
+            min-height: 122px;
+        }
+
+        #inputView .roast-console-card .insight-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: rgba(169, 181, 206, 0.72);
+            margin-bottom: 8px;
+        }
+
+        #inputView .roast-console-card .insight-value {
+            font-size: clamp(1.4rem, 2.3vw, 1.75rem);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        #inputView .roast-console-card .insight-subtext {
+            margin-top: 8px;
+            line-height: 1.6;
+            color: rgba(191, 200, 223, 0.74);
+            font-size: 0.86rem;
+        }
+
+        #inputView .roast-console-card .submit-row {
+            align-items: center;
+            gap: 10px;
+            margin-top: 2px;
+            justify-content: center;
+        }
+
+        #inputView .roast-console-card #roastBtn {
+            min-height: 46px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 176, 79, 0.42);
+            background: linear-gradient(135deg, #ff5f1f 0%, #ff8a3d 50%, #ffc266 100%);
+            font-size: 0.94rem;
+            letter-spacing: -0.01em;
+            font-weight: 700;
+            box-shadow: 0 10px 22px rgba(255, 122, 51, 0.22);
+            width: auto;
+            min-width: 190px;
+            padding: 0 20px;
+            flex: 0 0 auto;
+        }
+
+        #inputView .roast-console-card #roastBtn:hover {
+            filter: brightness(1.04);
+            transform: translateY(-1px);
+            box-shadow: 0 22px 38px rgba(255, 122, 51, 0.32);
+        }
+
+        #inputView .roast-console-card .shortcut-hint {
+            display: none;
+        }
+
+        #inputView .roast-console-card kbd {
+            border-radius: 6px;
+            border: 1px solid rgba(154, 170, 213, 0.28);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(245, 248, 255, 0.92);
+            box-shadow: none;
+        }
+
+        #inputView .roast-console-card .btn-warning-text {
+            display: none;
+        }
+
+        /* Landing Hero in Chatbox Mode */
+        .hero.hero-chat-composer {
+            padding-top: 42px;
+            padding-bottom: 34px;
+            min-height: calc(100vh - 76px);
+            display: flex;
+            align-items: center;
+        }
+
+        .hero.hero-chat-composer .hero-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 16px;
+            max-width: 1020px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .hero.hero-chat-composer .hero-copy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 860px;
+            margin: 0 auto 2px;
+            padding-top: 0;
+        }
+
+        .hero.hero-chat-composer .hero-pill {
+            display: inline-flex;
+            margin-bottom: 10px;
+            background: rgba(127, 146, 255, 0.1);
+            border-color: rgba(154, 170, 213, 0.32);
+            color: #dce5ff;
+            font-size: 0.76rem;
+        }
+
+        .hero.hero-chat-composer .hero-pill-dot {
+            background: #9fb4ff;
+            box-shadow: 0 0 10px rgba(159, 180, 255, 0.9);
+        }
+
+        .hero.hero-chat-composer h1 {
+            margin: 0 0 10px;
+            max-width: 23ch;
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2vw, 2.05rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #f5f7ff;
+            text-wrap: balance;
+            text-shadow: 0 10px 28px rgba(120, 144, 255, 0.22);
+        }
+
+        .hero.hero-chat-composer h2 {
+            display: block;
+            font-size: 0.92rem;
+            color: rgba(190, 200, 223, 0.9);
+            font-weight: 500;
+            max-width: 52ch;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .hero.hero-chat-composer p,
+        .hero.hero-chat-composer h2,
+        .hero.hero-chat-composer .hero-actions,
+        .hero.hero-chat-composer .stats-badges,
+        .hero.hero-chat-composer .hero-proof,
+        .hero.hero-chat-composer .hero-ticker {
+            display: none;
+        }
+
+        .hero.hero-chat-composer h2 {
+            display: block;
+        }
+
+        .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero {
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            align-self: start;
+        }
+
+        .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero .roast-console-card {
+            min-height: 0;
+            margin-bottom: 0;
+        }
+
+        .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero .idea-insights {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        #inputView .composer-meta {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        #inputView .composer-meta span {
+            border: 1px solid rgba(154, 170, 213, 0.2);
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 0.72rem;
+            color: rgba(195, 204, 229, 0.82);
+            background: rgba(255, 255, 255, 0.016);
+        }
+
+        @media (max-width: 1100px) {
+            #inputView .roast-console-card #ideaInput {
+                min-height: 132px;
+            }
+
+            .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero .idea-insights {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 920px) {
+            .hero.hero-chat-composer {
+                min-height: auto;
+                padding-top: 22px;
+                padding-bottom: 14px;
+            }
+
+            .hero.hero-chat-composer h1 {
+                font-size: clamp(1.1rem, 4.8vw, 1.42rem);
+                max-width: 21ch;
+                margin-bottom: 8px;
+            }
+
+            .hero.hero-chat-composer h2 {
+                font-size: 0.84rem;
+                max-width: 34ch;
+            }
+
+            #inputView .roast-console-card {
+                border-radius: 16px;
+                padding: 12px;
+            }
+
+            #inputView .roast-console-head {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            #inputView .roast-console-note {
+                max-width: none;
+            }
+
+            #inputView .roast-console-card .harshness-selector {
+                width: 100%;
+                overflow-x: auto;
+                justify-content: flex-start;
+                white-space: nowrap;
+            }
+
+            #inputView .roast-console-card .input-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #inputView .roast-console-card #surpriseMeBtn {
+                width: 100%;
+            }
+
+            #inputView .roast-console-card .idea-insights {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            #inputView .roast-console-card .submit-row {
+                justify-content: center;
+                align-items: center;
+            }
+
+            #inputView .composer-meta {
+                display: none;
+            }
+
+            .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero .idea-insights {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            header {
+                height: 58px;
+            }
+
+            .nav-container {
+                padding: 0 12px;
+            }
+
+            main.container {
+                padding-left: 12px;
+                padding-right: 12px;
+                padding-top: 64px;
+            }
+
+            #inputView {
+                margin-top: 4px;
+            }
+
+            .hero.hero-chat-composer h1 {
+                font-size: clamp(0.94rem, 4.4vw, 1.14rem);
+                max-width: 20ch;
+                margin-bottom: 6px;
+            }
+
+            #inputView .roast-console-card {
+                padding: 8px;
+                border-radius: 12px;
+            }
+
+            #inputView .roast-console-title {
+                font-size: 0.82rem;
+            }
+
+            #inputView .roast-console-note {
+                display: none;
+            }
+
+            #inputView .roast-console-head {
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+
+            #inputView .roast-console-card .harshness-selector {
+                padding: 3px;
+                gap: 4px;
+            }
+
+            #inputView .roast-console-card .harshness-selector label {
+                padding: 5px 9px;
+                font-size: 0.7rem;
+            }
+
+            #inputView .roast-console-card .input-group {
+                margin-bottom: 8px;
+                padding: 6px;
+                border-radius: 12px;
+            }
+
+            #inputView .roast-console-card #ideaInput {
+                min-height: 96px;
+                border-radius: 10px;
+                padding: 10px 10px 32px;
+                font-size: 0.84rem;
+                line-height: 1.45;
+            }
+
+            #inputView .roast-console-card .char-counter {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.66rem;
+                padding: 2px 6px;
+            }
+
+            #inputView .roast-console-card .input-toolbar {
+                margin-bottom: 8px;
+                gap: 8px;
+            }
+
+            #inputView .roast-console-card .prompt-chips {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 2px;
+                scrollbar-width: none;
+            }
+
+            #inputView .roast-console-card .prompt-chips::-webkit-scrollbar {
+                display: none;
+            }
+
+            #inputView .roast-console-card .prompt-chip {
+                flex: 0 0 auto;
+                font-size: 0.7rem;
+                padding: 5px 9px;
+            }
+
+            #inputView .roast-console-card #surpriseMeBtn {
+                width: auto;
+                align-self: flex-end;
+                min-height: 34px;
+                padding: 0 12px;
+                font-size: 0.78rem;
+            }
+
+            #inputView .roast-console-card .idea-insights {
+                grid-template-columns: 1fr;
+            }
+
+            .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero .idea-insights {
+                grid-template-columns: 1fr;
+            }
+
+            #inputView .roast-console-card .insight-card {
+                min-height: 0;
+            }
+
+            #inputView .roast-console-card #roastBtn {
+                min-height: 38px;
+                font-size: 0.84rem;
+                min-width: 148px;
+                padding: 0 14px;
+            }
+
+            #inputView .roast-console-card .btn-warning-text {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .hero.hero-chat-composer {
+                padding-top: 14px;
+                padding-bottom: 10px;
+            }
+
+            .hero.hero-chat-composer .hero-grid > #inputView.hero-chatbox-in-hero {
+                max-width: 100%;
+            }
+
+            #inputView .roast-console-card {
+                padding: 7px;
+                border-radius: 10px;
+            }
+
+            #inputView .roast-console-title {
+                font-size: 0.78rem;
+            }
+
+            #inputView .roast-console-card #ideaInput {
+                min-height: 88px;
+                font-size: 0.8rem;
             }
         }
 
@@ -2605,11 +4134,231 @@
             </div>
         </section>
 
+        <section class="page-section scroll-reveal" id="signal-lab">
+            <div class="section-header">
+                <h2 class="section-title">Founder Signal Lab</h2>
+                <p class="section-desc">A live-style control center that shows what serious teams fix before they ship.</p>
+            </div>
+            <div class="signal-lab-grid">
+                <div class="signal-console">
+                    <div class="signal-console-head">
+                        <div class="signal-live">
+                            <span class="signal-live-dot"></span>
+                            Live Roast Diagnostics
+                        </div>
+                        <div class="signal-latency">Median roast: 1.8s</div>
+                    </div>
+                    <div class="signal-stream">
+                        <div class="signal-row">
+                            <div class="signal-row-top">
+                                <span>Problem Clarity</span>
+                                <span>82%</span>
+                            </div>
+                            <div class="signal-track">
+                                <div class="signal-fill" style="--signal-level: 82%; --signal-delay: 0s;"></div>
+                            </div>
+                        </div>
+                        <div class="signal-row">
+                            <div class="signal-row-top">
+                                <span>Differentiation Strength</span>
+                                <span>67%</span>
+                            </div>
+                            <div class="signal-track">
+                                <div class="signal-fill" style="--signal-level: 67%; --signal-delay: 0.4s;"></div>
+                            </div>
+                        </div>
+                        <div class="signal-row">
+                            <div class="signal-row-top">
+                                <span>Go-to-Market Readiness</span>
+                                <span>74%</span>
+                            </div>
+                            <div class="signal-track">
+                                <div class="signal-fill" style="--signal-level: 74%; --signal-delay: 0.8s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="signal-chip-row">
+                        <span class="signal-chip">live clarity scoring</span>
+                        <span class="signal-chip">distribution signal check</span>
+                        <span class="signal-chip">execution risk alerts</span>
+                    </div>
+                </div>
+                <div class="signal-feature-grid">
+                    <article class="signal-feature-card">
+                        <div class="signal-feature-icon">AI</div>
+                        <h3 class="signal-feature-title">Sharper Teardown</h3>
+                        <p class="signal-feature-text">Structured feedback that cuts noise and highlights the real bottleneck fast.</p>
+                        <div class="signal-feature-value">4-signal model</div>
+                    </article>
+                    <article class="signal-feature-card">
+                        <div class="signal-feature-icon">GTM</div>
+                        <h3 class="signal-feature-title">Market Pressure Test</h3>
+                        <p class="signal-feature-text">See if your wedge survives competitors, pricing pressure, and channel realities.</p>
+                        <div class="signal-feature-value">3 roast modes</div>
+                    </article>
+                    <article class="signal-feature-card">
+                        <div class="signal-feature-icon">UX</div>
+                        <h3 class="signal-feature-title">Founder Friendly Output</h3>
+                        <p class="signal-feature-text">Readable insights, score cards, and share assets built for quick decisions.</p>
+                        <div class="signal-feature-value">1-click share</div>
+                    </article>
+                    <article class="signal-feature-card">
+                        <div class="signal-feature-icon">PM</div>
+                        <h3 class="signal-feature-title">Ship-Ready Direction</h3>
+                        <p class="signal-feature-text">Actionable fixes so the next sprint moves toward traction, not vanity metrics.</p>
+                        <div class="signal-feature-value">focus > hype</div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section scroll-reveal" id="feature-system">
+            <div class="feature-split">
+                <div class="feature-copy">
+                    <div class="feature-eyebrow">Signal Architecture</div>
+                    <h2 class="feature-title">One operating layer for idea quality, market reality, and execution risk.</h2>
+                    <p class="feature-desc">Most founder tools give motivation. This gives structured pressure. Every roast is split into clear signals so you can see what is weak before shipping.</p>
+                    <ul class="feature-list">
+                        <li><span>Four-signal scoring across originality, market, execution, and competition.</span></li>
+                        <li><span>Clear verdict framing to separate fixable weaknesses from dead-end ideas.</span></li>
+                        <li><span>Fast outputs that founders can share internally without rewriting everything.</span></li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <div class="mock-window">
+                        <div class="mock-top">
+                            <div class="mock-dot-row">
+                                <span class="mock-dot"></span>
+                                <span class="mock-dot"></span>
+                                <span class="mock-dot"></span>
+                            </div>
+                            Startup Signal Engine
+                        </div>
+                        <div class="mock-body">
+                            <div class="mock-chart-row">
+                                <span>Originality</span>
+                                <div class="mock-bar"><i style="width: 42%;"></i></div>
+                                <strong>4.2</strong>
+                            </div>
+                            <div class="mock-chart-row">
+                                <span>Market</span>
+                                <div class="mock-bar"><i style="width: 61%;"></i></div>
+                                <strong>6.1</strong>
+                            </div>
+                            <div class="mock-chart-row">
+                                <span>Execution</span>
+                                <div class="mock-bar"><i style="width: 79%;"></i></div>
+                                <strong>7.9</strong>
+                            </div>
+                            <div class="mock-chart-row">
+                                <span>Competition</span>
+                                <div class="mock-bar"><i style="width: 88%;"></i></div>
+                                <strong>8.8</strong>
+                            </div>
+                            <div class="mock-note">Distribution wedge is still thin. Tighten a specific channel strategy before adding more product scope.</div>
+                        </div>
+                        <div class="mock-footer">Updated from founder inputs in under 2 seconds.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section scroll-reveal" id="feature-loop">
+            <div class="feature-split is-reverse">
+                <div class="feature-copy">
+                    <div class="feature-eyebrow">Decision Loop</div>
+                    <h2 class="feature-title">Go from raw idea to sharper direction in one clean founder workflow.</h2>
+                    <p class="feature-desc">Instead of vague advice, every output gives a practical next move. Teams can prioritize what to test now, what to delay, and what to kill early.</p>
+                    <ul class="feature-list">
+                        <li><span>Switch roast modes based on stage: soft, realistic, or brutal.</span></li>
+                        <li><span>Generate premium social cards and score badges instantly.</span></li>
+                        <li><span>Track history and leaderboard to benchmark idea quality over time.</span></li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <div class="mock-window">
+                        <div class="mock-top">
+                            <div class="mock-dot-row">
+                                <span class="mock-dot"></span>
+                                <span class="mock-dot"></span>
+                                <span class="mock-dot"></span>
+                            </div>
+                            Founder Sprint Timeline
+                        </div>
+                        <div class="mock-body">
+                            <ul class="timeline-list">
+                                <li><strong>Step 01:</strong> paste the startup concept and set the desired harshness level.</li>
+                                <li><strong>Step 02:</strong> get direct roast output plus scores and a verdict in one view.</li>
+                                <li><strong>Step 03:</strong> publish a share card or move straight into build fixes.</li>
+                            </ul>
+                            <div class="mock-note">The goal is not to sound smart. The goal is to prevent six months of wrong execution.</div>
+                        </div>
+                        <div class="mock-footer">Built for founders who prefer signal over hype.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section scroll-reveal" id="product-demo">
+            <div class="section-header">
+                <h2 class="section-title">Product Demo</h2>
+                <p class="section-desc">A clean, production-style output preview that mirrors the real roast experience.</p>
+            </div>
+            <div class="demo-wide">
+                <div class="demo-wide-grid">
+                    <div class="demo-pane">
+                        <h3>Founder output snapshot</h3>
+                        <p>"Good surface polish, weak wedge. The pain is real, but incumbents can copy this quickly unless your channel strategy gets very specific."</p>
+                        <div class="demo-stat-grid">
+                            <div class="demo-stat">
+                                <span>Verdict</span>
+                                <strong>Needs Work</strong>
+                            </div>
+                            <div class="demo-stat">
+                                <span>Score</span>
+                                <strong>4.2 / 10</strong>
+                            </div>
+                            <div class="demo-stat">
+                                <span>Mode</span>
+                                <strong>Brutal</strong>
+                            </div>
+                            <div class="demo-stat">
+                                <span>Action</span>
+                                <strong>Refine GTM</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-pane">
+                        <h3>Share-ready assets</h3>
+                        <p>Export the social card, post to X, download PDF notes, and keep the decision trail visible for your team.</p>
+                        <div class="demo-stat-grid">
+                            <div class="demo-stat">
+                                <span>Social Card</span>
+                                <strong>1200 x 630</strong>
+                            </div>
+                            <div class="demo-stat">
+                                <span>Score Badge</span>
+                                <strong>800 x 400</strong>
+                            </div>
+                            <div class="demo-stat">
+                                <span>History</span>
+                                <strong>Persistent</strong>
+                            </div>
+                            <div class="demo-stat">
+                                <span>PDF Export</span>
+                                <strong>One click</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Input View -->
         <div id="inputView">
             <!-- Idea Input Card -->
-            <div class="card glow-orange">
-                <div class="roast-header-row">
+            <div class="card glow-orange roast-console-card">
+                <div class="roast-header-row roast-console-head">
                     <label class="card-label">💡 Your Startup Idea</label>
                     <div class="harshness-selector">
                         <input type="radio" id="level-soft" name="harshness" value="soft">
@@ -2902,6 +4651,15 @@
 
             <div style="text-align: center;">
                 <button id="clearHistoryBtn" class="btn-clear-history">Clear Local History</button>
+            </div>
+        </section>
+
+        <section id="final-cta" class="page-section scroll-reveal">
+            <div class="final-cta-shell">
+                <div class="final-cta-eyebrow">Ready for clarity</div>
+                <h2 class="final-cta-title">Ship a stronger startup idea before the market teaches it the hard way.</h2>
+                <p class="final-cta-text">Paste your concept, get an honest teardown, and move into build decisions with confidence. Everything you need is already in this flow.</p>
+                <button class="btn btn-primary nav-roast-btn">Start your roast</button>
             </div>
         </section>
 
@@ -3952,6 +5710,71 @@
             heroStatBadges[1].textContent = 'Powered by Groq AI';
             heroStatBadges[2].textContent = 'Free forever';
         }
+
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            heroSection.classList.add('hero-chat-composer');
+            const heroPill = heroSection.querySelector('.hero-pill');
+            const heroHeading = heroSection.querySelector('h1');
+            const heroSubheading = heroSection.querySelector('h2');
+            if (heroPill) heroPill.innerHTML = '<span class="hero-pill-dot"></span> Founder Reality Check';
+            if (heroHeading) heroHeading.textContent = 'Kill weak startup ideas before they waste your next 6 months.';
+            if (heroSubheading) heroSubheading.textContent = 'Paste your idea and get a brutally clear teardown in seconds.';
+        }
+
+        const heroGrid = document.querySelector('.hero-grid');
+        const heroPanel = heroGrid ? heroGrid.querySelector('.hero-panel') : null;
+        if (heroGrid && heroPanel && inputView && !heroGrid.querySelector('#inputView')) {
+            heroGrid.replaceChild(inputView, heroPanel);
+            inputView.classList.add('hero-chatbox-in-hero');
+        }
+
+        const roastHead = document.querySelector('#inputView .roast-header-row');
+        const roastCardTitle = roastHead ? roastHead.querySelector('.card-label') : null;
+        if (roastHead && roastCardTitle && !roastHead.querySelector('.roast-console-title-wrap')) {
+            const titleWrap = document.createElement('div');
+            titleWrap.className = 'roast-console-title-wrap';
+
+            const kicker = document.createElement('div');
+            kicker.className = 'roast-console-kicker';
+            kicker.textContent = 'Startup Copilot';
+
+            const note = document.createElement('div');
+            note.className = 'roast-console-note';
+            note.textContent = 'Share your idea and we instantly stress-test clarity, market, execution, and competition.';
+
+            roastCardTitle.classList.add('roast-console-title');
+            roastCardTitle.textContent = 'Paste your startup idea for a real-world teardown';
+            roastCardTitle.setAttribute('for', 'ideaInput');
+
+            titleWrap.appendChild(kicker);
+            titleWrap.appendChild(roastCardTitle);
+            titleWrap.appendChild(note);
+            roastHead.insertBefore(titleWrap, roastHead.firstChild);
+        }
+
+        const submitRowEl = inputView ? inputView.querySelector('.submit-row') : null;
+        if (submitRowEl && !inputView.querySelector('.composer-meta')) {
+            const meta = document.createElement('div');
+            meta.className = 'composer-meta';
+            meta.innerHTML = '<span>Instant roast</span><span>4-signal score</span><span>Share-ready output</span>';
+            submitRowEl.insertAdjacentElement('afterend', meta);
+        }
+
+        const softLabel = document.querySelector('label[for="level-soft"]');
+        const realLabel = document.querySelector('label[for="level-real"]');
+        const brutalLabel = document.querySelector('label[for="level-brutal"]');
+        if (softLabel) softLabel.textContent = 'Soft';
+        if (realLabel) realLabel.textContent = 'Realistic';
+        if (brutalLabel) brutalLabel.textContent = 'Brutal';
+
+        if (roastBtn) roastBtn.textContent = 'Roast My Idea';
+
+        const shortcutHint = document.querySelector('#inputView .shortcut-hint');
+        if (shortcutHint) shortcutHint.innerHTML = 'Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd>';
+
+        const warningText = document.querySelector('#inputView .btn-warning-text');
+        if (warningText) warningText.textContent = 'Warning: brutal honesty now saves wasted months later.';
 
         const revealElements = document.querySelectorAll('.scroll-reveal');
         if ('IntersectionObserver' in window && revealElements.length) {
