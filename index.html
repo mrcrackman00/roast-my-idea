@@ -1960,37 +1960,78 @@
             transform: translateY(0);
         }
 
+/* --- FOOTER REFINEMENT --- */
         .main-footer {
             margin-top: 120px;
-            padding: 56px 0 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(0,0,0,0.2);
         }
 
         .footer-content {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr;
-            gap: 28px;
+            grid-template-columns: 2fr 1fr 1.2fr 1fr;
+            gap: 60px;
             align-items: start;
-            margin-bottom: 34px;
+            margin-bottom: 60px;
         }
 
-        .footer-right {
-            display: contents;
-        }
-
-        .footer-nav-inline {
+        .footer-left {
             display: flex;
-            flex-wrap: wrap;
-            gap: 14px 18px;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .footer-meta {
+        .footer-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            color: #fff;
+        }
+
+        .footer-desc {
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.6;
-            text-align: right;
+            max-width: 320px;
+        }
+
+        .footer-col h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            opacity: 0.6;
+        }
+
+        .footer-col-links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .footer-col a, .footer-col div {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: #FF4500;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #444;
+            font-size: 0.85rem;
         }
 
         .scroll-reveal {
@@ -2731,45 +2772,54 @@
 
     </main>
 
-    <footer class="main-footer">
+        <footer class="main-footer">
         <div class="container footer-content">
             <div class="footer-left">
                 <div class="footer-logo">
-                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
-                        <path d="M16 2C16 2 24 12 24 20C24 24.4183 20.4183 28 16 28C11.5817 28 8 24.4183 8 20C8 12 16 2 16 2Z" fill="url(#footer-logo-gradient)" />
-                        <path opacity="0.4" d="M16 7C16 7 21 15 21 20C21 22.7614 18.7614 25 16 25C13.2386 25 11 22.7614 11 20C11 15 16 7 16 7Z" fill="white" />
+                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;">
+                        <path d="M16 2C16 2 24 12 24 20C24 24.4183 20.4183 28 16 28C11.5817 28 8 24.4183 8 20C8 12 16 2 16 2Z" fill="url(#footer-logo-gradient-new)" />
                         <defs>
-                            <linearGradient id="footer-logo-gradient" x1="16" y1="2" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+                            <linearGradient id="footer-logo-gradient-new" x1="16" y1="2" x2="16" y2="28" gradientUnits="userSpaceOnUse">
                                 <stop stop-color="#FF4500" />
                                 <stop offset="1" stop-color="#FF8C00" />
                             </linearGradient>
                         </defs>
                     </svg>
-                    RoastMyIdea<span style="color:var(--text-secondary)">.ai</span>
+                    RoastMyIdea<span style="color:rgba(255,255,255,0.4)">.ai</span>
                 </div>
                 <div class="footer-desc">Brutal AI startup feedback for founders who would rather pivot early than waste months shipping the wrong thing.</div>
-                <div class="footer-credit">
-                    Built by <a href="https://github.com/mrcrackman00" target="_blank">Avinash</a> 🇮🇳
-                    <span class="founder-badge">16 y/o Founder</span>
-                </div>
             </div>
             
-            <div class="footer-right">
-                <div class="footer-col">
-                    <h4>Projects</h4>
-                    <a href="https://whisperme.co" target="_blank">WhisperMe.co</a>
-                    <a href="#">RoastMyIdea.ai</a>
+            <div class="footer-col">
+                <h4>Explore</h4>
+                <div class="footer-col-links">
+                    <a href="#how-it-works">How it Works</a>
+                    <a href="#examples">Hall of Shame</a>
+                    <a href="#leaderboard">Leaderboard</a>
                 </div>
-                <div class="footer-col">
-                    <h4>Socials</h4>
-                    <a href="https://github.com/mrcrackman00" target="_blank">GitHub</a>
-                    <a href="https://twitter.com/avinashtwts" target="_blank">X (Twitter)</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Builder</h4>
+                <div class="footer-col-links">
+                    <div style="color: #eee;">Avinash</div>
+                    <div style="font-size: 0.85rem; opacity: 0.6;">16 y/o Founder · India</div>
+                    <a href="https://github.com/mrcrackman00" target="_blank">GitHub Profile</a>
+                    <a href="https://twitter.com/avinashtwts" target="_blank">X / Twitter</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Projects</h4>
+                <div class="footer-col-links">
+                    <a href="https://whisperme.co" target="_blank">WhisperMe.co</a>
+                    <a href="https://roastmyidea.ai">RoastMyIdea.ai</a>
                 </div>
             </div>
         </div>
         <div class="footer-bottom container">
-            <div>&copy; 2026 RoastMyIdea. All rights reserved.</div>
-            <div class="made-with">Made with <span style="color: #FF4500;">🔥</span> and zero sleep</div>
+            <div>&copy; 2026 RoastMyIdea.ai · All rights reserved.</div>
+            <div>whisperme.co</div>
         </div>
     </footer>
 
@@ -3605,6 +3655,7 @@
             const harshnessRadio = document.querySelector('input[name="harshness"]:checked');
             const harshness = harshnessRadio ? harshnessRadio.value : 'brutal';
 
+            resultsView.style.display = 'none'; // Clear old results to prevent confusion
             startTerminalLoading();
 
             fetchRoast(idea, harshness).then(result => {
@@ -3765,46 +3816,6 @@
             heroStatBadges[0].textContent = 'Built for founders';
             heroStatBadges[1].textContent = 'Powered by Groq AI';
             heroStatBadges[2].textContent = 'Free forever';
-        }
-
-        const footerDesc = document.querySelector('.footer-desc');
-        if (footerDesc) {
-            footerDesc.textContent = 'Brutal AI startup feedback for founders who would rather pivot early than waste months shipping the wrong thing.';
-        }
-
-        const footerCredit = document.querySelector('.footer-credit');
-        if (footerCredit) {
-            footerCredit.innerHTML = 'Built by <a href="https://github.com/mrcrackman00" target="_blank">Avinash</a> · 16 y/o founder from India';
-        }
-
-        if (footerCredit) {
-            footerCredit.innerHTML = footerCredit.innerHTML.replace(/Â·|·/g, '&middot;');
-        }
-
-        const footerCols = document.querySelectorAll('.footer-right .footer-col');
-        if (footerCols.length >= 2) {
-            footerCols[0].innerHTML = `
-                <h4>Explore</h4>
-                <div class="footer-nav-inline">
-                    <a href="#how-it-works">How it Works</a>
-                    <a href="#examples">Examples</a>
-                    <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank">GitHub</a>
-                    <a href="https://twitter.com/avinashtwts" target="_blank">Twitter</a>
-                </div>
-            `;
-            footerCols[1].innerHTML = `
-                <h4>Builder</h4>
-                <div class="footer-meta">Built by Avinash · 16 y/o founder from India</div>
-            `;
-        }
-
-        if (footerCols.length >= 2) {
-            footerCols[1].innerHTML = footerCols[1].innerHTML.replace(/Â·|·/g, '&middot;');
-        }
-
-        const footerBottom = document.querySelector('.footer-bottom');
-        if (footerBottom) {
-            footerBottom.innerHTML = '<div>&copy; 2026 RoastMyIdea.ai</div><div>whisperme.co</div>';
         }
 
         const revealElements = document.querySelectorAll('.scroll-reveal');

@@ -22,6 +22,8 @@ export default async function handler(req, res) {
     tone = "a sharp, realistic Y Combinator partner. Be direct, pragmatic, and brutally objective about market realities, no fluff.";
   }
 
+  const seed = Math.floor(Math.random() * 1000000); // Random seed to force AI variety
+
   const sysPrompt = `You are ${tone} You have seen 10,000 startup ideas. Analyze the idea, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. 
 
 ### CONSTRAINTS:
@@ -30,6 +32,7 @@ export default async function handler(req, res) {
 3. Use ONLY double quotes for keys and strings.
 4. DO NOT use unescaped double quotes inside strings (use \" instead).
 5. DO NOT include trailing commas.
+6. RANDOM SEED [${seed}]: Do NOT repeat scores from previous runs (e.g., avoid always giving 4, 7, 6, 8). Be dynamic and specific to THIS idea.
 
 JSON STRUCTURE: 
 {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
