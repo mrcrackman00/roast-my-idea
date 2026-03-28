@@ -101,13 +101,14 @@ JSON STRUCTURE:
     } catch (e) {
         console.error('Initial Parse Fail. Raw:', jsonStr);
         // Fallback: If it's a quote issue, try a simple fix
+        let secondaryFix = '';
         try {
-            const secondaryFix = jsonStr.replace(/(?<![:[,])"(?![:,\]}])/g, '\\"');
+            secondaryFix = jsonStr.replace(/(?<![\[\{:,])"(?![:,\]\}])/g, '\\"');
             const fixed = JSON.parse(secondaryFix);
             return res.status(200).json(fixed);
         } catch (e2) {
             console.error('Secondary Parse Fail. Fixed logic:', secondaryFix);
-            throw new Error('AI output was malformed. Please try again.');
+            throw new Error('The AI generated a malformed response. Please try again or rephrase your idea.');
         }
     }
   } catch (error) {
