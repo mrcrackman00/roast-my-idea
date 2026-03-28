@@ -29,8 +29,17 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
         body {
             background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
             color: var(--text-primary);
             font-family: var(--font-main);
             line-height: 1.6;
@@ -38,6 +47,18 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 9999;
         }
 
         /* Utility */
@@ -61,46 +82,233 @@
             padding: 0 20px;
         }
 
-        /* Header */
+        /* Navigation / Header */
         header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(8, 8, 8, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            height: 60px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .header-content {
+        header.scrolled {
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
-            font-size: 1.25rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .badge-ai {
+        .logo {
+            font-size: 1.125rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-author {
             font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--primary);
-            background: rgba(255, 69, 0, 0.1);
-            padding: 4px 10px;
-            border-radius: 100px;
-            border: 1px solid rgba(255, 69, 0, 0.2);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--text-primary);
+            transform-origin: bottom right;
+            transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-pill.outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-pill.outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-pill.primary {
+            background: var(--primary);
+            color: #fff;
+            border: 1px solid transparent;
+            box-shadow: 0 2px 10px rgba(255, 69, 0, 0.3);
+        }
+
+        .btn-pill.primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.5);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .mobile-dropdown {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transform: translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .mobile-dropdown.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 8px 0;
         }
 
         /* Hero */
         .hero {
+            position: relative;
             text-align: center;
-            padding: 80px 0 40px;
+            padding: 100px 0 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 69, 0, 0.15);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 24px;
+            animation: pulse-border 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(255, 69, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 69, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 69, 0, 0); }
+        }
+
+        .hero-pill-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary);
         }
 
         .hero h1 {
@@ -153,43 +361,61 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 24px;
+            padding: 32px;
             margin-bottom: 24px;
             position: relative;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            z-index: 1;
         }
 
         .card.glow-orange {
-            border-color: rgba(255, 69, 0, 0.3);
-            box-shadow: 0 0 30px rgba(255, 69, 0, 0.05), inset 0 0 20px rgba(255, 69, 0, 0.02);
+            border-color: rgba(255, 69, 0, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(255, 69, 0, 0.03);
         }
 
         .card.glow-red {
-            border-color: rgba(255, 0, 0, 0.3);
-            background: linear-gradient(to bottom right, #111111, #1a0a0a);
+            border-color: rgba(255, 0, 0, 0.2);
+            background: linear-gradient(180deg, #111111 0%, #0a0505 100%);
         }
 
         .card.glow-green {
-            border-color: rgba(0, 255, 136, 0.3);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.2);
+            background: linear-gradient(180deg, #111111 0%, #050a07 100%);
         }
 
         .card-header {
             margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
         }
 
         .card-label {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 4px;
+            font-size: 1.125rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
         .card-subtext {
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .roast-content, .metrics-container, .improvement-list {
+            position: relative;
+            z-index: 2;
         }
 
         /* Inputs */
@@ -493,6 +719,306 @@
             background: #111;
         }
 
+        /* Harshness Selector */
+        .roast-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .harshness-selector {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .harshness-selector input[type="radio"] {
+            display: none;
+        }
+
+        .harshness-selector label {
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .harshness-selector input[type="radio"]:checked + label {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .harshness-selector input[value="brutal"]:checked + label {
+            color: #ff4444;
+            border-color: rgba(255, 69, 0, 0.3);
+            background: rgba(255, 69, 0, 0.1);
+        }
+
+        .submit-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .submit-row .btn-primary {
+            flex: 1;
+        }
+
+        .shortcut-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        kbd {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.5);
+        }
+
+        /* Hacker Terminal Loading */
+        .hacker-terminal {
+            background: #050505;
+            border: 1px solid #222;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,255,136,0.05);
+            text-align: left;
+        }
+        
+        .terminal-header {
+            background: #111;
+            padding: 10px 16px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .terminal-header .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        
+        .terminal-title {
+            margin-left: auto;
+            margin-right: auto;
+            font-family: monospace;
+            color: #666;
+            font-size: 0.8rem;
+            transform: translateX(-24px);
+        }
+        
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #00FF88;
+            height: 200px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .term-line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeInLine 0.1s forwards;
+        }
+
+        .term-line.error { color: #ff4444; }
+        .term-line.warning { color: #ffbd2e; }
+
+        @keyframes fadeInLine { to { opacity: 1; } }
+
+        .term-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background: #00FF88;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Page Sections */
+        .page-section {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 40px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* How it Works */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .step-card {
+            background: rgba(17, 17, 17, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 32px 24px;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 69, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--card-bg);
+        }
+
+        .step-num {
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            font-size: 4rem;
+            font-weight: 800;
+            color: rgba(255, 69, 0, 0.05);
+            line-height: 1;
+            transition: color 0.3s ease;
+            z-index: 0;
+        }
+
+        .step-card:hover .step-num {
+            color: rgba(255, 69, 0, 0.15);
+        }
+
+        .step-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .step-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Examples */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .example-card {
+            background: rgba(17, 17, 17, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .example-card:hover {
+            background: rgba(255, 69, 0, 0.05);
+            border-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.01);
+        }
+
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .example-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .example-scores {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mini-score {
+            font-size: 0.75rem;
+            background: rgba(255, 69, 0, 0.1);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .example-preview {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-style: italic;
+            border-left: 2px solid rgba(255, 69, 0, 0.5);
+            padding-left: 16px;
+            line-height: 1.5;
+        }
+
         /* Toast */
         .toast-container {
             position: fixed;
@@ -527,34 +1053,135 @@
             font-size: 1.25rem;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: auto;
+        /* Premium Footer */
+        .main-footer {
+            margin-top: 80px;
+            padding: 60px 0 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(180deg, transparent, rgba(0,0,0,0.6) 100%);
         }
 
-        .footer-links {
-            margin: 12px 0;
+        .footer-content {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .footer-left {
+            max-width: 320px;
+        }
+
+        .footer-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .footer-credit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-credit a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .footer-credit a:hover {
+            color: var(--primary);
+        }
+
+        .founder-badge {
+            background: rgba(255, 69, 0, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 0.70rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .footer-col {
+            display: flex;
+            flex-direction: column;
             gap: 16px;
         }
 
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: var(--transition);
+        .footer-col h4 {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .footer-links a:hover {
-            color: var(--text-primary);
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Print Styles for PDF Download */
+        @media print {
+            body { background: white; color: black; background-image: none; }
+            body::before { display: none; }
+            header, .hero, #inputView, .share-section, .copy-btn, footer, .toast-container { display: none !important; }
+            main { padding: 0; }
+            .card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; background: white; color: black; margin-bottom: 20px; border-radius: 8px; padding: 24px; }
+            .card::before { display: none; }
+            .card.glow-orange, .card.glow-red, .card.glow-green { background: white; border-color: #ccc; }
+            .card-label, .card-subtext, .roast-content, .metric-header { color: black !important; }
+            .bar-container { border-color: #eee; }
+            .bar-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .improvement-item { background: #f9f9f9; border-color: #eee; color: black; }
         }
 
         /* Mobile */
+        @media (max-width: 768px) {
+            .desktop-only { display: none !important; }
+            .mobile-menu-btn { display: block; }
+        }
         @media (max-width: 640px) {
             .hero { padding: 40px 0 20px; }
             .action-buttons { flex-direction: column; }
@@ -562,27 +1189,70 @@
             .stats-badges { flex-direction: column; align-items: center; }
             .toast-container { top: 16px; right: 16px; left: 16px; }
             .toast { min-width: auto; width: 100%; }
+            .footer-content { flex-direction: column; gap: 40px; }
+            .footer-right { gap: 40px; }
+            .footer-bottom { flex-direction: column; text-align: center; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container header-content">
-            <div class="logo">🔥 RoastMyIdea<span style="color:var(--text-secondary)">.ai</span></div>
-            <div class="badge-ai">Powered by Gemini AI</div>
+    <header id="main-header">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="logo">🔥 RoastMyIdea<span style="color:var(--text-secondary)">.ai</span></a>
+                <span class="badge-author">by Avinash</span>
+            </div>
+            
+            <nav class="nav-center desktop-only">
+                <a href="#how-it-works" class="nav-link">How it Works</a>
+                <a href="#examples" class="nav-link">Examples</a>
+                <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank" class="nav-link">GitHub</a>
+            </nav>
+
+            <div class="nav-right desktop-only">
+                <a href="https://github.com" target="_blank" class="btn-pill outline">
+                    <span>⭐</span> Star on GitHub
+                </a>
+                <button class="btn-pill primary nav-roast-btn">
+                    🔥 Roast My Idea
+                </button>
+            </div>
+
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Dropdown -->
+        <div class="mobile-dropdown" id="mobileDropdown">
+            <a href="#how-it-works" class="nav-link">How it Works</a>
+            <a href="#examples" class="nav-link">Examples</a>
+            <a href="https://github.com/mrcrackman00/roast-my-idea" target="_blank" class="nav-link">GitHub</a>
+            <hr class="mobile-divider">
+            <a href="https://github.com" target="_blank" class="btn-pill outline" style="justify-content:center; margin-bottom: 12px;">
+                <span>⭐</span> Star on GitHub
+            </a>
+            <button class="btn-pill primary nav-roast-btn" style="width: 100%;">
+                🔥 Roast My Idea
+            </button>
         </div>
     </header>
 
     <main class="container">
         <!-- Hero Section -->
         <section class="hero">
+            <div class="hero-pill">
+                <div class="hero-pill-dot"></div>
+                Llama 3.3 70B Online
+            </div>
             <h1>We'll destroy your startup idea.</h1>
             <h2>Then fix it.</h2>
             <p>Stop wasting months on a bad idea. Get brutal honest AI feedback in seconds.</p>
             <div class="stats-badges">
-                <div class="stat-badge">🔥 10,000+ ideas roasted</div>
-                <div class="stat-badge">💀 93% founders found it useful</div>
+                <div class="stat-badge">🇮🇳 Built by a 16 y/o founder</div>
+                <div class="stat-badge">⚡ Powered by Groq AI</div>
                 <div class="stat-badge">✨ Free forever</div>
             </div>
         </section>
@@ -591,21 +1261,45 @@
         <div id="inputView">
             <!-- Idea Input Card -->
             <div class="card glow-orange">
-                <label class="card-label">💡 Your Startup Idea</label>
+                <div class="roast-header-row">
+                    <label class="card-label">💡 Your Startup Idea</label>
+                    <div class="harshness-selector">
+                        <input type="radio" id="level-soft" name="harshness" value="soft">
+                        <label for="level-soft">🍼 Soft</label>
+
+                        <input type="radio" id="level-real" name="harshness" value="real">
+                        <label for="level-real">🧐 Realistic</label>
+
+                        <input type="radio" id="level-brutal" name="harshness" value="brutal" checked>
+                        <label for="level-brutal">💀 Brutal</label>
+                    </div>
+                </div>
                 <div class="input-group">
                     <textarea id="ideaInput" rows="6" placeholder="Describe your startup idea in detail... we dare you. The more detail, the better the roast." maxlength="500"></textarea>
                     <div class="char-counter"><span id="charCount">0</span> / 500</div>
                 </div>
-                <button id="roastBtn" class="btn btn-primary">🔥 Roast My Idea</button>
-                <div class="btn-warning-text">Warning: This will hurt. But it'll help. 💀</div>
+                <div class="submit-row">
+                    <button id="roastBtn" class="btn btn-primary">🔥 Roast My Idea</button>
+                    <div class="shortcut-hint desktop-only">Press <kbd>⌘</kbd> + <kbd>Enter</kbd></div>
+                </div>
+                <div class="btn-warning-text" style="margin-top: 16px;">Warning: This will hurt. But it'll help. 💀</div>
             </div>
         </div>
 
         <!-- Loading View -->
         <div id="loadingView" class="loading-state hidden">
-            <div class="fire-spinner">🔥</div>
-            <div class="loading-title">Analyzing your idea...</div>
-            <div class="card-subtext">Preparing the roast... <span class="loading-dots"></span>💀</div>
+            <div class="hacker-terminal">
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="terminal-title">roast.sh</span>
+                </div>
+                <div class="terminal-body" id="terminalOutput">
+                    <div class="term-line">> Initializing Llama 3.3 70B...</div>
+                    <span class="term-cursor" id="termCursor"></span>
+                </div>
+            </div>
         </div>
 
         <!-- Results View -->
@@ -688,6 +1382,10 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
                         Share on X
                     </button>
+                    <button id="downloadPdfBtn" class="btn" style="background: transparent; border-color: rgba(255,255,255,0.2);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download PDF
+                    </button>
                     <button id="resetBtn" class="btn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                         Roast Another Idea
@@ -696,16 +1394,113 @@
             </div>
 
         </div>
+    
+        <!-- How it Works Section -->
+        <section id="how-it-works" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-desc">Three simple steps to save yourself from building a useless product.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <div class="step-icon">📝</div>
+                        <h3 class="step-title">Paste Your Idea</h3>
+                        <p class="step-desc">Describe your startup in a few sentences. The more detail you provide, the better the roast.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <div class="step-icon">🔥</div>
+                        <h3 class="step-title">Get Roasted</h3>
+                        <p class="step-desc">Our AI brutally analyzes every weakness, competitor, and market flaw in your concept.</p>
+                    </div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <div class="step-icon">🚀</div>
+                        <h3 class="step-title">Fix & Build</h3>
+                        <p class="step-desc">Use the actionable feedback to pivot and build something people actually want to buy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">Hall of Shame</h2>
+                <p class="section-desc">Click any example to autofill and roast it yourself.</p>
+            </div>
+            <div class="examples-grid">
+                <div class="example-card" onclick="fillExample('Uber for Dogs: An app where you can request a vetted dog walker on-demand to come pick up your dog within 10 minutes.')">
+                    <div class="example-header">
+                        <div class="example-title">Uber for Dogs</div>
+                        <div class="example-scores">
+                            <span class="mini-score">Originality: 2/10</span>
+                            <span class="mini-score">Market: 4/10</span>
+                        </div>
+                    </div>
+                    <div class="example-preview">"Ah yes, the 400th 'Uber for X' pitch today. Have you considered the unit economics of a 10-minute SLA on dog walkers?"</div>
+                </div>
+
+                <div class="example-card" onclick="fillExample('AI Girlfriend App: A conversational AI that acts as your romantic partner with microtransactions for premium voice notes.')">
+                    <div class="example-header">
+                        <div class="example-title">AI Girlfriend App</div>
+                        <div class="example-scores">
+                            <span class="mini-score">Originality: 1/10</span>
+                            <span class="mini-score">Market: 9/10</span>
+                        </div>
+                    </div>
+                    <div class="example-preview">"Financially brilliant, morally bankrupt. Prepare to fight 10,000 identical wrappers built on Character.ai."</div>
+                </div>
+
+                <div class="example-card" onclick="fillExample('Crypto Social Network: A decentralized Twitter where every like costs $0.001 in Solana to prevent spam.')">
+                    <div class="example-header">
+                        <div class="example-title">Crypto Social Network</div>
+                        <div class="example-scores">
+                            <span class="mini-score">Originality: 3/10</span>
+                            <span class="mini-score">Market: 1/10</span>
+                        </div>
+                    </div>
+                    <div class="example-preview">"Nobody wants to pay to use Twitter. Friction is the enemy of social networks, and you just added financial friction to liking a meme."</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer>
-        <div>Built by a 16 y/o founder from India 🇮🇳</div>
-        <div class="footer-links">
-            <a href="#">WhisperMe.co</a>
-            <span>•</span>
-            <a href="#">GitHub</a>
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                <div class="footer-logo">🔥 RoastMyIdea<span style="color:var(--text-secondary)">.ai</span></div>
+                <div class="footer-desc">Stop wasting months. Get brutal, honest AI feedback on your startup idea in seconds.</div>
+                <div class="footer-credit">
+                    Built by <a href="https://github.com/mrcrackman00" target="_blank">Avinash</a> 🇮🇳
+                    <span class="founder-badge">16 y/o Founder</span>
+                </div>
+            </div>
+            
+            <div class="footer-right">
+                <div class="footer-col">
+                    <h4>Projects</h4>
+                    <a href="https://whisperme.co" target="_blank">WhisperMe.co</a>
+                    <a href="#">RoastMyIdea.ai</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Socials</h4>
+                    <a href="https://github.com/mrcrackman00" target="_blank">GitHub</a>
+                    <a href="https://twitter.com/avinashtwts" target="_blank">X (Twitter)</a>
+                </div>
+            </div>
         </div>
-        <div>Made with 🔥 and zero sleep</div>
+        <div class="footer-bottom container">
+            <div>&copy; 2026 RoastMyIdea. All rights reserved.</div>
+            <div class="made-with">Made with 🔥 and zero sleep</div>
+        </div>
     </footer>
 
     <!-- Toast Container -->
@@ -714,7 +1509,7 @@
     <script>
         // DOM Elements
         const ideaInput = document.getElementById('ideaInput');
-        const API_KEY = "AIzaSyB0OaE7-R9ZEVAdGKnoAIOsTER-lFSRd6s";
+        const API_KEY = "REPLACE_WITH_YOUR_GROQ_API_KEY"; // Masked for git push security
         const charCount = document.getElementById('charCount');
         const roastBtn = document.getElementById('roastBtn');
         const inputView = document.getElementById('inputView');
@@ -723,6 +1518,7 @@
         const toastContainer = document.getElementById('toastContainer');
         const copyRoastBtn = document.getElementById('copyRoastBtn');
         const shareXBtn = document.getElementById('shareXBtn');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
         const resetBtn = document.getElementById('resetBtn');
 
         const roastContent = document.getElementById('roastContent');
@@ -850,25 +1646,32 @@
         }
 
         // Roast API Call
-        async function fetchRoast(idea) {
-            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+        async function fetchRoast(idea, harshness) {
+            const endpoint = `https://api.groq.com/openai/v1/chat/completions`;
             
-            const prompt = `You are the most brutal, honest startup critic in Silicon Valley. You have seen 10,000 startup ideas fail. Roast this idea mercilessly — be very specific about WHY it will fail, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. You MUST respond ONLY in valid JSON format with NO markdown, NO backticks, just pure JSON: {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}\n\nIdea: ${idea}`;
+            let tone = "the most brutal, honest startup critic in Silicon Valley. Roast the user's idea mercilessly and destroy their ego — be very specific about WHY it will fail.";
+            if (harshness === 'soft') {
+                tone = "a gentle, supportive startup coach. Point out flaws but focus heavily on encouragement and soft corrections.";
+            } else if (harshness === 'real') {
+                tone = "a sharp, realistic Y Combinator partner. Be direct, pragmatic, and brutally objective about market realities, no fluff.";
+            }
+
+            const sysPrompt = `You are ${tone} You have seen 10,000 startup ideas. Analyze the idea, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. You MUST respond ONLY in valid JSON format with NO markdown, NO backticks, just pure JSON: {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
 
             const payload = {
-                contents: [{
-                    parts: [{ text: prompt }]
-                }],
-                generationConfig: {
-                    temperature: 0.8,
-                    responseMimeType: "application/json"
-                }
+                model: "llama-3.3-70b-versatile",
+                messages: [
+                    { role: "system", content: sysPrompt },
+                    { role: "user", content: `Idea: ${idea}` }
+                ],
+                temperature: 0.8
             };
 
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify(payload)
             });
@@ -887,11 +1690,9 @@
             const data = await response.json();
             
             try {
-                // Gemini sometimes still wraps in markdown despite instructions if mimeType isn't fully respected, but generationConfig should handle it.
-                // Just in case, parse carefully.
-                let jsonStr = data.candidates[0].content.parts[0].text;
-                // remove any possible backticks if they sneak through
-                jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+                // Parse carefully, Llama sometimes includes markdown blocks
+                let jsonStr = data.choices[0].message.content.trim();
+                jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
                 return JSON.parse(jsonStr);
             } catch (e) {
                 console.error('Failed to parse response JSON', data);
@@ -899,27 +1700,81 @@
             }
         }
 
-        roastBtn.addEventListener('click', async () => {
-            const idea = ideaInput.value.trim();
+        const logMessages = [
+            "> Extracting delusion levels...",
+            "> Calculating Total Addressable Market (hint: it's 0)...",
+            "> Finding identical YC dropouts...",
+            "> Analyzing unit economics...",
+            "[WARN] Friction detected in user flow",
+            "> Generating brutal realities...",
+            "> Compiling harsh feedback...",
+            "[ERR] Founder ego too high. Adjusting roast multiplier to 11x...",
+            "> Preparing final reality check..."
+        ];
 
+        let terminalInterval;
+
+        function startTerminalLoading() {
+            inputView.classList.add('hidden');
+            loadingView.classList.remove('hidden');
+            
+            const termOut = document.getElementById('terminalOutput');
+            termOut.innerHTML = '<div class="term-line">> Initializing Groq inference...</div><span class="term-cursor" id="termCursor"></span>';
+            
+            let msgIdx = 0;
+            terminalInterval = setInterval(() => {
+                if(msgIdx >= logMessages.length) {
+                    clearInterval(terminalInterval);
+                    return;
+                }
+                const cursor = document.getElementById('termCursor');
+                const newLine = document.createElement('div');
+                newLine.className = 'term-line';
+                if(logMessages[msgIdx].includes('[WARN]')) newLine.classList.add('warning');
+                if(logMessages[msgIdx].includes('[ERR]')) newLine.classList.add('error');
+                newLine.textContent = logMessages[msgIdx];
+                termOut.insertBefore(newLine, cursor);
+                termOut.scrollTop = termOut.scrollHeight;
+                msgIdx++;
+            }, 800);
+        }
+
+        function stopTerminalLoading() {
+            clearInterval(terminalInterval);
+            loadingView.classList.add('hidden');
+            inputView.classList.remove('hidden');
+        }
+
+        function triggerRoast() {
+            const idea = ideaInput.value.trim();
             if (!idea) {
                 showToast('Please enter your startup idea first!');
                 ideaInput.focus();
                 return;
             }
 
-            // Show loading state
-            inputView.classList.add('hidden');
-            loadingView.classList.remove('hidden');
+            const harshnessRadio = document.querySelector('input[name="harshness"]:checked');
+            const harshness = harshnessRadio ? harshnessRadio.value : 'brutal';
 
-            try {
-                const result = await fetchRoast(idea);
-                renderResults(result);
-            } catch (error) {
-                console.error(error);
+            startTerminalLoading();
+
+            fetchRoast(idea, harshness).then(result => {
+                clearInterval(terminalInterval);
                 loadingView.classList.add('hidden');
-                inputView.classList.remove('hidden');
+                renderResults(result);
+            }).catch(error => {
+                console.error(error);
+                stopTerminalLoading();
                 showToast(error.message || 'Something went wrong. Try again!');
+            });
+        }
+
+        roastBtn.addEventListener('click', triggerRoast);
+
+        ideaInput.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                e.preventDefault();
+                triggerRoast();
             }
         });
 
@@ -943,6 +1798,12 @@
             window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
         });
 
+        // PDF Download functionality
+        downloadPdfBtn.addEventListener('click', () => {
+            window.print();
+            showToast('Preparing PDF...', 'success');
+        });
+
         // Reset functionality
         resetBtn.addEventListener('click', () => {
             resultsView.style.display = 'none';
@@ -954,6 +1815,61 @@
             charCount.style.color = 'var(--text-secondary)';
             inputView.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileDropdown = document.getElementById('mobileDropdown');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileDropdown.classList.toggle('active');
+        });
+
+        // Close mobile dropdown on link click
+        document.querySelectorAll('.mobile-dropdown .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDropdown.classList.remove('active');
+            });
+        });
+
+        // Fill example functionality
+        function fillExample(text) {
+            ideaInput.value = text;
+            ideaInput.dispatchEvent(new Event('input'));
+            
+            resultsView.style.display = 'none';
+            inputView.classList.remove('hidden');
+            
+            const headerOffset = 100;
+            const elementPosition = ideaInput.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+            
+            setTimeout(() => { ideaInput.focus(); }, 500);
+        }
+
+        // Connect Nav Roast Buttons to the Input Field
+        document.querySelectorAll('.nav-roast-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(mobileDropdown.classList.contains('active')) {
+                    mobileDropdown.classList.remove('active');
+                }
+                ideaInput.focus();
+                window.scrollTo({ top: ideaInput.offsetTop - 100, behavior: 'smooth' });
+            });
         });
 
     </script>
