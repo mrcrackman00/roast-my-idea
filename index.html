@@ -3408,26 +3408,26 @@
         }
 
 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ idea, harshness })
-            });
 
-            if (!response.ok) {
-                let errorDetails = response.statusText || `Status ${response.status}`;
-                try {
-                    const errData = await response.json();
-                    if (errData.error) {
-                        errorDetails = errData.error;
-                    }
-                } catch(e) {}
-                throw new Error(errorDetails);
-            }
 
-            return await response.json();
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         const logMessages = [
             "> Extracting delusion levels...",

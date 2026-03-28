@@ -35,12 +35,20 @@ JSON STRUCTURE:
 {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
 
   try {
+    console.log('--- Roast Request ---');
+    console.log('Idea:', idea.substring(0, 100) + '...');
+    
+    // Add an AbortController for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 9000); // 9 sec timeout for Groq
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${API_KEY}`
       },
+      signal: controller.signal,
       body: JSON.stringify({
         model: "llama-3.3-70b-versatile",
         messages: [
@@ -51,9 +59,17 @@ JSON STRUCTURE:
       })
     });
 
+    clearTimeout(timeoutId);
+
     if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.error?.message || 'Groq API error');
+        const errText = await response.text();
+        console.error('Groq API Error Status:', response.status, errText);
+        let message = 'Groq API error';
+        try {
+            const errData = JSON.parse(errText);
+            message = errData.error?.message || message;
+        } catch(e) {}
+        throw new Error(message);
     }
 
     const data = await response.json();
@@ -64,6 +80,7 @@ JSON STRUCTURE:
     const lastBrace = content.lastIndexOf('}');
     
     if (firstBrace === -1 || lastBrace === -1) {
+        console.error('AI non-JSON output:', content);
         throw new Error('AI failed to output valid JSON format.');
     }
     
@@ -76,20 +93,26 @@ JSON STRUCTURE:
         .trim();
     
     try {
-        return res.status(200).json(JSON.parse(jsonStr));
+        const parsed = JSON.parse(jsonStr);
+        return res.status(200).json(parsed);
     } catch (e) {
-        console.error('Invalid JSON from AI:', content);
-        // Fallback: If it's a quote issue, try a simple fix (replace inner quotes if not followed by : or ,)
-        // This is a last-resort hack for specific Llama-style errors
+        console.error('Initial Parse Fail. Raw:', jsonStr);
+        // Fallback: If it's a quote issue, try a simple fix
         try {
             const secondaryFix = jsonStr.replace(/(?<![:[,])"(?![:,\]}])/g, '\\"');
-            return res.status(200).json(JSON.parse(secondaryFix));
+            const fixed = JSON.parse(secondaryFix);
+            return res.status(200).json(fixed);
         } catch (e2) {
+            console.error('Secondary Parse Fail. Fixed logic:', secondaryFix);
             throw new Error('AI output was malformed. Please try again.');
         }
     }
   } catch (error) {
-    console.error('API Error:', error);
+    if (error.name === 'AbortError') {
+        console.error('Request Timed Out (9s)');
+        return res.status(504).json({ error: 'AI took too long to respond. Try again!' });
+    }
+    console.error('Final API Error Wrapper:', error.message);
     return res.status(500).json({ error: error.message || 'Failed to generate roast' });
   }
 }
