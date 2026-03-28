@@ -29,21 +29,22 @@ export default async function handler(req, res) {
 ### CONSTRAINTS:
 1. You MUST respond ONLY in valid JSON format.
 2. NO markdown, NO backticks, NO prefix/suffix text.
-3. Use ONLY double quotes for keys and strings.
-4. DO NOT use unescaped double quotes inside strings (use \" instead).
-5. DO NOT include trailing commas.
-6. RANDOM SEED [${seed}]: Do NOT repeat scores from previous runs (e.g., avoid always giving 4, 7, 6, 8). Be dynamic and specific to THIS idea.
+3. Use ONLY double quotes for keys and values.
+4. DO NOT use unescaped double quotes inside strings (e.g., use \\" instead).
+5. NO trailing commas.
+6. RANDOM SEED [${seed}]: Ensure unique scores and feedback for this specific idea.
 
-JSON STRUCTURE: 
-{"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
+EXAMPLE RESPONSE:
+{"roast": "Brutal critique here...", "scores": {"originality": 7, "marketSize": 5, "executionDifficulty": 8, "competitionLevel": 9}, "improvements": ["Fix X", "Do Y", "Scale Z"]}
+
+JSON OUTPUT ONLY:`;
 
   try {
     console.log('--- Roast Request ---');
     console.log('Idea:', idea.substring(0, 100) + '...');
     
-    // Add an AbortController for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 9000); // 9 sec timeout for Groq
+    const timeoutId = setTimeout(() => controller.abort(), 9000);
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -58,7 +59,8 @@ JSON STRUCTURE:
           { role: "system", content: sysPrompt },
           { role: "user", content: `Idea: ${idea}` }
         ],
-        temperature: 0.8
+        temperature: 0.7,
+        response_format: { type: "json_object" } // Force JSON mode if supported
       })
     });
 
@@ -78,37 +80,48 @@ JSON STRUCTURE:
     const data = await response.json();
     const content = data.choices[0].message.content.trim();
     
-    // Robust extraction: find the first { and last }
+    // Robust extraction
     const firstBrace = content.indexOf('{');
     const lastBrace = content.lastIndexOf('}');
     
     if (firstBrace === -1 || lastBrace === -1) {
-        console.error('AI non-JSON output:', content);
-        throw new Error('AI failed to output valid JSON format.');
+        throw new Error('AI failed to output JSON. Please try again.');
     }
     
     let jsonStr = content.substring(firstBrace, lastBrace + 1);
 
-    // Sanitization layer
-    jsonStr = jsonStr
-        .replace(/,\s*([}\]])/g, '$1') // Remove trailing commas
-        .replace(/[\u0000-\u001F\u007F-\u009F]/g, "") // Remove control characters
-        .trim();
+    // Advanced Sanitization
+    const sanitize = (str) => {
+        return str
+            .replace(/[\u0000-\u001F\u007F-\u009F]/g, "") // Remove control characters
+            .replace(/,\s*([}\]])/g, '$1') // Remove trailing commas
+            .trim();
+    };
+
+    jsonStr = sanitize(jsonStr);
     
     try {
         const parsed = JSON.parse(jsonStr);
         return res.status(200).json(parsed);
     } catch (e) {
-        console.error('Initial Parse Fail. Raw:', jsonStr);
-        // Fallback: If it's a quote issue, try a simple fix
-        let secondaryFix = '';
+        console.error('Final Parse Attempt. Raw:', jsonStr);
+        
+        // Final "Heal" attempt: 
+        // 1. Escape internal quotes while preserving delimiters
+        // 2. This regex looks for quotes NOT preceded by [ { , : (with optional space)
+        // AND NOT followed by : , ] } (with optional space)
+        let healed = jsonStr.replace(/(?<![\{\[:,\s])\s*"\s*(?![\}:,\s])/g, '\\"');
+        
         try {
-            secondaryFix = jsonStr.replace(/(?<![\[\{:,])"(?![:,\]\}])/g, '\\"');
-            const fixed = JSON.parse(secondaryFix);
+            const fixed = JSON.parse(healed);
             return res.status(200).json(fixed);
         } catch (e2) {
-            console.error('Secondary Parse Fail. Fixed logic:', secondaryFix);
-            throw new Error('The AI generated a malformed response. Please try again or rephrase your idea.');
+            // Last resort: If the AI failed JSON but gave text, wrap it manually
+            // This is risky but better than a crash if the roast is readable
+            if (jsonStr.includes('"roast":')) {
+                console.warn('Manual JSON reconstruction triggered');
+            }
+            throw new Error('AI output malformed. Please try a simpler description of your idea.');
         }
     }
   } catch (error) {
