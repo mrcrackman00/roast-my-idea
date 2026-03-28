@@ -25,7 +25,7 @@ improvements to make it better.
 
 ## 🚀 Live Demo
 
-[roastmyidea.vercel.app](#)
+https://roast-my-idea-opal.vercel.app/
 
 ## 👤 Built By
 
