@@ -22,7 +22,17 @@ export default async function handler(req, res) {
     tone = "a sharp, realistic Y Combinator partner. Be direct, pragmatic, and brutally objective about market realities, no fluff.";
   }
 
-  const sysPrompt = `You are ${tone} You have seen 10,000 startup ideas. Analyze the idea, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. You MUST respond ONLY in valid JSON format with NO markdown, NO backticks, just pure JSON: {"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
+  const sysPrompt = `You are ${tone} You have seen 10,000 startup ideas. Analyze the idea, name real competitors, point out exact market problems. Then give scores out of 10 for: Originality, Market Size, Execution Difficulty, Competition Level. Finally give exactly 3 very specific actionable improvements. 
+
+### CONSTRAINTS:
+1. You MUST respond ONLY in valid JSON format.
+2. NO markdown, NO backticks, NO prefix/suffix text.
+3. Use ONLY double quotes for keys and strings.
+4. DO NOT use unescaped double quotes inside strings (use \" instead).
+5. DO NOT include trailing commas.
+
+JSON STRUCTURE: 
+{"roast": "string", "scores": {"originality": 0, "marketSize": 0, "executionDifficulty": 0, "competitionLevel": 0}, "improvements": ["string", "string", "string"]}`;
 
   try {
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -57,13 +67,26 @@ export default async function handler(req, res) {
         throw new Error('AI failed to output valid JSON format.');
     }
     
-    const jsonStr = content.substring(firstBrace, lastBrace + 1);
+    let jsonStr = content.substring(firstBrace, lastBrace + 1);
+
+    // Sanitization layer
+    jsonStr = jsonStr
+        .replace(/,\s*([}\]])/g, '$1') // Remove trailing commas
+        .replace(/[\u0000-\u001F\u007F-\u009F]/g, "") // Remove control characters
+        .trim();
     
     try {
         return res.status(200).json(JSON.parse(jsonStr));
     } catch (e) {
         console.error('Invalid JSON from AI:', content);
-        throw new Error('AI output was malformed. Please try again.');
+        // Fallback: If it's a quote issue, try a simple fix (replace inner quotes if not followed by : or ,)
+        // This is a last-resort hack for specific Llama-style errors
+        try {
+            const secondaryFix = jsonStr.replace(/(?<![:[,])"(?![:,\]}])/g, '\\"');
+            return res.status(200).json(JSON.parse(secondaryFix));
+        } catch (e2) {
+            throw new Error('AI output was malformed. Please try again.');
+        }
     }
   } catch (error) {
     console.error('API Error:', error);
