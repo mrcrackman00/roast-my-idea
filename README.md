@@ -1,4 +1,4 @@
-Yeh paste kar README mein:
+
 
 markdown# 🔥 RoastMyIdea.ai
 
