@@ -86,6 +86,12 @@
             padding: 0 24px;
         }
 
+        main.container {
+            max-width: 1280px;
+            padding-left: 36px;
+            padding-right: 36px;
+        }
+
         /* Navigation / Header */
         header {
             position: sticky;
@@ -1355,17 +1361,20 @@
         main::before {
             content: '';
             position: absolute;
-            inset: 0 0 auto 0;
+            top: 0;
+            left: -120px;
+            right: -120px;
+            bottom: auto;
             height: 520px;
             background:
-                radial-gradient(circle at 15% 20%, rgba(255, 122, 51, 0.18), transparent 30%),
-                radial-gradient(circle at 85% 0%, rgba(255, 255, 255, 0.08), transparent 24%);
+                radial-gradient(circle at 34% 18%, rgba(255, 122, 51, 0.14), transparent 34%),
+                radial-gradient(circle at 84% 4%, rgba(255, 255, 255, 0.05), transparent 24%);
             pointer-events: none;
             z-index: -1;
         }
 
         .hero {
-            padding: 72px 0 48px;
+            padding: 56px 0 32px;
             text-align: left;
         }
 
@@ -1380,15 +1389,18 @@
         .hero-grid {
             width: 100%;
             display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-            gap: 28px;
-            align-items: stretch;
+            grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.82fr);
+            gap: 64px;
+            align-items: start;
         }
 
         .hero-copy {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            max-width: 680px;
+            padding-top: 34px;
+            margin-left: 0;
         }
 
         .hero h1, .hero h2, .section-title {
@@ -1396,19 +1408,26 @@
         }
 
         .hero h1 {
-            font-size: clamp(3.2rem, 7vw, 5.7rem);
-            margin-bottom: 10px;
-            max-width: 12ch;
+            font-size: clamp(3.1rem, 4.6vw, 4.6rem);
+            line-height: 0.96;
+            letter-spacing: -0.055em;
+            margin-bottom: 22px;
+            max-width: 10.6ch;
+            text-wrap: balance;
         }
 
         .hero h2 {
-            font-size: clamp(1.5rem, 3vw, 2.4rem);
+            font-size: clamp(1.12rem, 1.7vw, 1.5rem);
+            line-height: 1.2;
+            max-width: 28ch;
             margin-bottom: 18px;
+            color: #ff6f2a;
         }
 
         .hero p {
-            font-size: 1.08rem;
-            max-width: 620px;
+            font-size: 0.98rem;
+            line-height: 1.8;
+            max-width: 58ch;
             margin: 0 0 30px;
         }
 
@@ -1416,7 +1435,8 @@
             display: flex;
             gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         .hero-secondary-link {
@@ -1441,21 +1461,26 @@
 
         .hero-proof {
             display: flex;
-            gap: 14px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-top: 6px;
+            margin-top: 14px;
+            max-width: 640px;
+        }
+
+        .stats-badges {
+            max-width: 620px;
         }
 
         .proof-chip {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 14px;
+            padding: 9px 12px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.82rem;
         }
 
         .proof-chip strong {
@@ -1473,6 +1498,12 @@
             padding: 24px;
             overflow: hidden;
             box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
+            min-height: 0;
+            max-width: 520px;
+            width: 100%;
+            justify-self: end;
+            align-self: start;
+            margin-top: 8px;
         }
 
         .hero-panel::before {
@@ -1486,9 +1517,9 @@
         .hero-panel-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
         }
@@ -1505,7 +1536,7 @@
             align-items: baseline;
             gap: 8px;
             font-family: var(--font-display);
-            font-size: 2.7rem;
+            font-size: 2.8rem;
             font-weight: 700;
             color: var(--text-primary);
         }
@@ -1520,13 +1551,14 @@
         .hero-panel-copy {
             position: relative;
             z-index: 1;
-            padding: 18px;
+            padding: 18px 18px 20px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #EDEDEF;
-            line-height: 1.7;
-            margin-bottom: 18px;
+            line-height: 1.75;
+            margin-bottom: 16px;
+            font-size: 0.98rem;
         }
 
         .hero-panel-metrics {
@@ -1704,6 +1736,32 @@
         }
 
         /* Mobile */
+        @media (max-width: 920px) {
+            main.container {
+                max-width: 1120px;
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            main::before {
+                left: -40px;
+                right: -40px;
+            }
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .hero-copy {
+                max-width: none;
+                padding-top: 0;
+                margin-left: 0;
+            }
+            .hero-panel {
+                max-width: 680px;
+                width: 100%;
+                justify-self: start;
+            }
+        }
+
         @media (max-width: 768px) {
             .desktop-only { display: none !important; }
             .mobile-menu-btn { display: block; }
@@ -1716,18 +1774,47 @@
                 grid-template-columns: 1fr;
             }
             .hero {
-                text-align: center;
+                text-align: left;
+                padding: 36px 0 18px;
             }
             .hero-copy {
-                align-items: center;
+                align-items: flex-start;
             }
             .hero-proof,
             .hero-actions {
-                justify-content: center;
+                justify-content: flex-start;
+            }
+            .hero h1 {
+                font-size: clamp(2.5rem, 11vw, 3.6rem);
+                max-width: 10.5ch;
+                margin-bottom: 14px;
+            }
+            .hero h2 {
+                font-size: 1.1rem;
+                max-width: 25ch;
+            }
+            .hero p {
+                font-size: 0.96rem;
+                max-width: 100%;
+            }
+            .hero-panel {
+                border-radius: 22px;
+                padding: 18px;
+            }
+            .hero-panel-top {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .hero-panel-score {
+                font-size: 2.4rem;
+            }
+            .hero-panel-copy {
+                font-size: 0.95rem;
+                padding: 16px;
             }
         }
         @media (max-width: 640px) {
-            .hero { padding: 40px 0 20px; }
+            .hero { padding: 28px 0 12px; }
             .action-buttons { flex-direction: column; }
             .btn { width: 100%; }
             .input-toolbar,
@@ -1735,7 +1822,37 @@
                 flex-direction: column;
                 align-items: stretch;
             }
-            .stats-badges { flex-direction: column; align-items: center; }
+            .hero-actions {
+                width: 100%;
+                flex-direction: column;
+            }
+            .hero-secondary-link {
+                width: 100%;
+            }
+            .hero-proof {
+                width: 100%;
+            }
+            .proof-chip {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .stats-badges {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            .stat-badge {
+                text-align: center;
+            }
+            .hero-panel-metrics {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .hero-metric {
+                padding: 12px 14px;
+                border-radius: 16px;
+            }
+            .hero .stats-badges { flex-direction: column; align-items: stretch; }
             .toast-container { top: 16px; right: 16px; left: 16px; }
             .toast { min-width: auto; width: 100%; }
             .footer-content { flex-direction: column; gap: 40px; }
@@ -1812,9 +1929,9 @@
                 <div class="hero-pill-dot"></div>
                 Live AI Feedback Engine
             </div>
-            <h1>We break weak startup ideas before the market does.</h1>
-            <h2>Fast enough for founders. Sharp enough for investors.</h2>
-            <p>RoastMyIdea gives your concept a premium stress test in seconds with brutal feedback, score breakdowns, shareable assets, and fixes you can actually use.</p>
+            <h1>Kill bad startup ideas before they kill your time.</h1>
+            <h2>Brutal feedback, clean scoring, and fixes you can actually ship.</h2>
+            <p>Drop your idea, get a sharp teardown in seconds, and walk away with a stronger product direction instead of vague advice.</p>
             <div class="hero-actions">
                 <button class="btn btn-primary nav-roast-btn" style="width: auto; padding: 0 28px; min-height: 56px;">Roast My Idea</button>
                 <a href="#examples" class="hero-secondary-link">See Example Roasts</a>
@@ -1827,18 +1944,18 @@
             <div class="hero-proof">
                 <div class="proof-chip"><strong>4 signals</strong> originality, market, execution, competition</div>
                 <div class="proof-chip"><strong>3 modes</strong> soft, realistic, brutal</div>
-                <div class="proof-chip"><strong>0 fluff</strong> fast, direct, useful</div>
+                <div class="proof-chip"><strong>1 goal</strong> build something stronger</div>
             </div>
                 </div>
                 <div class="hero-panel">
                     <div class="hero-panel-top">
                         <div>
-                            <div class="hero-panel-label">Sample Signal</div>
+                            <div class="hero-panel-label">Sample Roast Score</div>
                             <div class="hero-panel-score">4.2 <span>out of 10</span></div>
                         </div>
-                        <div class="hero-panel-label">Premium product card</div>
+                        <div class="hero-panel-label">Founder Snapshot</div>
                     </div>
-                    <div class="hero-panel-copy">"Good interface, weak wedge. You are not building a business yet. You are packaging a feature that incumbents can clone by next quarter."</div>
+                    <div class="hero-panel-copy">"Interesting product, but the wedge is still thin. The problem is real, yet your edge is easy to copy unless distribution or positioning gets much sharper."</div>
                     <div class="hero-panel-metrics">
                         <div class="hero-metric">
                             <div class="hero-metric-label">Originality</div>
@@ -3162,6 +3279,13 @@
                 window.scrollTo({ top: ideaInput.offsetTop - 100, behavior: 'smooth' });
             });
         });
+
+        const heroStatBadges = document.querySelectorAll('.hero .stat-badge');
+        if (heroStatBadges.length >= 3) {
+            heroStatBadges[0].textContent = 'Built for founders';
+            heroStatBadges[1].textContent = 'Powered by Groq AI';
+            heroStatBadges[2].textContent = 'Free forever';
+        }
 
         updateIdeaInsights('');
 
