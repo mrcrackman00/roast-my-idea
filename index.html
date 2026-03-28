@@ -732,6 +732,41 @@
             background: #111;
         }
 
+        .card-action-btn {
+            min-height: 52px;
+            padding: 0 22px;
+            border-radius: 12px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .card-action-primary {
+            background: #FF4500;
+            border-color: #FF4500;
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(255, 69, 0, 0.24);
+        }
+
+        .card-action-primary:hover {
+            background: #ff5a1f;
+            border-color: #ff5a1f;
+            transform: translateY(-1px);
+            box-shadow: 0 16px 34px rgba(255, 69, 0, 0.3);
+        }
+
+        .card-action-secondary {
+            background: #0a0a0a;
+            border-color: rgba(255, 255, 255, 0.22);
+            color: #fff;
+        }
+
+        .card-action-secondary:hover {
+            background: #121212;
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
         /* Harshness Selector */
         .roast-header-row {
             display: flex;
@@ -1534,13 +1569,16 @@
                 </div>
 
                 <div class="action-buttons" style="margin-top: 24px;">
-                    <button id="downloadCardBtn" class="btn btn-primary" style="width: auto; padding: 12px 24px;">
+                    <button id="downloadCardBtn" class="btn card-action-btn card-action-primary">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Download Card
+                        &#128248; Download Card
                     </button>
-                    <button id="shareXBtn" class="btn btn-share">
+                    <button id="shareXBtn" class="btn card-action-btn card-action-secondary">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
-                        Share on X
+                        &#128038; Share on X
+                    </button>
+                    <button id="downloadPdfBtn" class="btn card-action-btn card-action-secondary">
+                        &#128196; Download PDF
                     </button>
                 </div>
             </div>
@@ -1563,9 +1601,6 @@
                     <button id="shareBadgeXBtn" class="btn btn-share">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.961h-1.93z"/></svg>
                         Share Badge
-                    </button>
-                    <button id="downloadPdfBtn" class="btn outline" style="border-color: rgba(255,255,255,0.1);">
-                        Full PDF Report
                     </button>
                     <button id="resetBtn" class="btn outline" style="border-color: rgba(255,255,255,0.1);">
                         Reset
@@ -1881,7 +1916,7 @@
             // Generate Share Card & Badge
             currentScores = data.scores;
             currentIdea = ideaInput.value.trim();
-            generateShareCard(data.roast, data.scores);
+            generateShareCard(currentIdea, data.scores);
             generateRoastBadge(currentIdea, data.scores);
             
             // Save to Leaderboard
@@ -2098,6 +2133,152 @@
             ctx.textAlign = 'left';
 
             // Show container
+            shareCardContainer.style.display = 'block';
+        }
+
+        function getAverageScore(scores) {
+            return (
+                scores.originality +
+                scores.marketSize +
+                scores.executionDifficulty +
+                scores.competitionLevel
+            ) / 4;
+        }
+
+        function getVerdictConfig(avg) {
+            if (avg >= 7) {
+                return { color: '#00C266', text: '\uD83D\uDE80 SOLID IDEA' };
+            }
+            if (avg >= 4) {
+                return { color: '#FF8C00', text: '\u26A0\uFE0F NEEDS WORK' };
+            }
+            return { color: '#FF4444', text: '\uD83D\uDC80 TERRIBLE IDEA' };
+        }
+
+        function getMetricColor(score) {
+            if (score >= 7) return '#00C266';
+            if (score >= 4) return '#FF8C00';
+            return '#FF4444';
+        }
+
+        function truncateIdea(text, maxLength = 40) {
+            const clean = (text || '').trim().replace(/\s+/g, ' ');
+            if (!clean) return 'No idea provided';
+            return clean.length > maxLength ? `${clean.slice(0, maxLength)}...` : clean;
+        }
+
+        function generateShareCard(idea, scores) {
+            const ctx = shareCanvas.getContext('2d');
+            const w = 1200;
+            const h = 630;
+            const avgScore = getAverageScore(scores).toFixed(1);
+            const verdict = getVerdictConfig(Number(avgScore));
+            const ideaLabel = truncateIdea(idea, 40);
+            const metrics = [
+                { label: 'Originality', val: scores.originality },
+                { label: 'Market', val: scores.marketSize },
+                { label: 'Execution', val: scores.executionDifficulty },
+                { label: 'Competition', val: scores.competitionLevel }
+            ];
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.045)';
+            for (let x = 24; x < w; x += 24) {
+                for (let y = 24; y < h; y += 24) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, 1.1, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            const glow = ctx.createRadialGradient(w * 0.5, h * 0.42, 0, w * 0.5, h * 0.42, 260);
+            glow.addColorStop(0, 'rgba(255, 69, 0, 0.18)');
+            glow.addColorStop(0.45, 'rgba(255, 69, 0, 0.07)');
+            glow.addColorStop(1, 'rgba(255, 69, 0, 0)');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, w, h);
+
+            ctx.save();
+            ctx.translate(w * 0.72, h * 0.58);
+            ctx.rotate(-0.38);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+            ctx.font = '700 74px Inter, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('RoastMyIdea.ai', 0, 0);
+            ctx.restore();
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '700 34px Inter, system-ui, sans-serif';
+            ctx.fillText('\uD83D\uDD25 RoastMyIdea.ai', 56, 72);
+
+            ctx.fillStyle = '#6F6F74';
+            ctx.font = '500 20px Inter, system-ui, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.fillText('roastmyidea.vercel.app', w - 56, 72);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#FF4500';
+            ctx.font = '800 120px Inter, system-ui, sans-serif';
+            ctx.fillText(avgScore, w / 2, 245);
+
+            ctx.fillStyle = '#77777C';
+            ctx.font = '700 22px Inter, system-ui, sans-serif';
+            ctx.fillText('OUT OF 10', w / 2, 285);
+
+            const verdictPaddingX = 26;
+            const verdictHeight = 54;
+            ctx.font = '700 24px Inter, system-ui, sans-serif';
+            const verdictWidth = ctx.measureText(verdict.text).width + (verdictPaddingX * 2);
+            const verdictX = (w - verdictWidth) / 2;
+            const verdictY = 316;
+
+            ctx.fillStyle = verdict.color;
+            roundRect(ctx, verdictX, verdictY, verdictWidth, verdictHeight, 27, true, false);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText(verdict.text, w / 2, verdictY + 35);
+
+            const pillY = 402;
+            const pillW = 252;
+            const pillH = 58;
+            const pillGap = 16;
+            let pillX = (w - ((pillW * 4) + (pillGap * 3))) / 2;
+
+            metrics.forEach((metric) => {
+                const color = getMetricColor(metric.val);
+                ctx.fillStyle = '#0B0B0B';
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                roundRect(ctx, pillX, pillY, pillW, pillH, 18, true, true);
+
+                ctx.fillStyle = '#F5F5F5';
+                ctx.font = '600 19px Inter, system-ui, sans-serif';
+                ctx.fillText(`${metric.label} ${metric.val}/10`, pillX + (pillW / 2), pillY + 37);
+                pillX += pillW + pillGap;
+            });
+
+            const dividerY = 548;
+            ctx.strokeStyle = '#FF4500';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(56, dividerY);
+            ctx.lineTo(w - 56, dividerY);
+            ctx.stroke();
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#8B8B90';
+            ctx.font = 'italic 22px Inter, system-ui, sans-serif';
+            ctx.fillText(`Idea: ${ideaLabel}`, 56, 594);
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#FF4500';
+            ctx.font = '700 24px Inter, system-ui, sans-serif';
+            ctx.fillText('Get roasted free \u2192', w - 56, 594);
+            ctx.textAlign = 'left';
+
             shareCardContainer.style.display = 'block';
         }
 
