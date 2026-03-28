@@ -1815,7 +1815,7 @@
         const saveSettingsBtn = document.getElementById('saveSettingsBtn');
         const apiKeyInput = document.getElementById('apiKeyInput');
 
-        const DEFAULT_API_KEY = "REPLACE_WITH_YOUR_GROQ_API_KEY"; // Masked for git push security 
+        const DEFAULT_API_KEY = ""; // Intentionally empty to encourage using the Gear icon for security
         
         function getActiveApiKey() {
             return localStorage.getItem('groq_api_key') || DEFAULT_API_KEY;
@@ -2222,11 +2222,15 @@
                 let errorDetails = response.statusText || `Status ${response.status}`;
                 try {
                     const errData = await response.json();
-                    if (errData.error && errData.error.message) {
-                        errorDetails = errData.error.message;
+                    if (errData.error) {
+                        if (errData.error.code === 'invalid_api_key' || response.status === 401) {
+                            errorDetails = "Invalid API Key. Click the ⚙️ icon to set yours!";
+                        } else if (errData.error.message) {
+                            errorDetails = errData.error.message;
+                        }
                     }
                 } catch(e) {}
-                throw new Error('API Error: ' + errorDetails);
+                throw new Error(errorDetails);
             }
 
             const data = await response.json();
@@ -2288,6 +2292,13 @@
         }
 
         function triggerRoast() {
+            const key = getActiveApiKey();
+            if (!key) {
+                showToast('Please set your Groq API Key first (Click the ⚙️ icon)!');
+                settingsModal.classList.add('active');
+                return;
+            }
+
             const idea = ideaInput.value.trim();
             if (!idea) {
                 showToast('Please enter your startup idea first!');
